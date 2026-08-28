@@ -1,0 +1,1036 @@
+<style>
+  #shopify-section-{{ section.id }} .footer {
+    {%- assign border_color = settings.footer_background | color_mix: settings.footer_text_color, 85 -%}
+
+    --background: {{ settings.footer_background.red }}, {{ settings.footer_background.green }}, {{ settings.footer_background.blue }};
+    --heading-color: {{ settings.footer_text_color.red }}, {{ settings.footer_text_color.green }}, {{ settings.footer_text_color.blue }};
+    --text-color: {{ settings.footer_text_color.red }}, {{ settings.footer_text_color.green }}, {{ settings.footer_text_color.blue }};
+    --border-color: {{ border_color.red }}, {{ border_color.green }}, {{ border_color.blue }};
+
+    width: 100%;
+  }
+
+  /* =========================================================
+     FOOTER CONTAINER
+     ========================================================= */
+
+  #shopify-section-{{ section.id }} .footer .container {
+    width: min(calc(100% - 100px), 1440px);
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  #shopify-section-{{ section.id }} .footer__inner {
+    padding-top: 56px;
+    padding-bottom: 40px;
+  }
+
+
+  /* =========================================================
+     DESKTOP FOOTER GRID
+     Brand → Shop = 2× normal distance
+     ========================================================= */
+
+  #shopify-section-{{ section.id }} .footer__item-list {
+    --footer-column-gap: clamp(32px, 4vw, 80px);
+
+    display: grid;
+
+    grid-template-columns:
+      minmax(0, 1fr)
+      130px
+      160px
+      250px;
+
+    column-gap: var(--footer-column-gap);
+    row-gap: 40px;
+
+    align-items: start;
+    width: 100%;
+  }
+
+
+  /* Brand gets an additional gap equal to the normal gap.
+     Therefore:
+     Brand → Shop = 2× normal column distance.
+  */
+
+  #shopify-section-{{ section.id }} .footer__item--text {
+    margin-right: var(--footer-column-gap);
+    padding-right: 0;
+  }
+
+
+  /* =========================================================
+     BRAND
+     ========================================================= */
+
+  #shopify-section-{{ section.id }} .footer__brand-name {
+    margin: 0 0 14px;
+    font-size: 24px;
+    line-height: 1.2;
+    font-weight: 700;
+  }
+
+  #shopify-section-{{ section.id }} .footer__brand-text {
+    max-width: 430px;
+    margin: 0;
+  }
+
+  #shopify-section-{{ section.id }} .footer__brand-text p {
+    margin: 0;
+    line-height: 1.65;
+  }
+
+
+  /* =========================================================
+     COLUMN HEADINGS
+     ========================================================= */
+
+  #shopify-section-{{ section.id }} .footer__item-title {
+    margin: 0 0 18px;
+    line-height: 1.3;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+
+  /* =========================================================
+     FOOTER CONTENT
+     ========================================================= */
+
+  #shopify-section-{{ section.id }} .footer__item-content {
+    margin: 0;
+  }
+
+  #shopify-section-{{ section.id }} .footer__item-content > p {
+    margin: 0;
+    line-height: 1.65;
+  }
+
+
+  /* =========================================================
+     LINKS
+     ========================================================= */
+
+  #shopify-section-{{ section.id }} .footer__link-grid {
+    display: grid;
+    gap: 12px;
+
+    margin: 0;
+    padding: 0;
+  }
+
+  #shopify-section-{{ section.id }} .footer__link-grid .linklist__item {
+    margin: 0;
+    padding: 0;
+  }
+
+  #shopify-section-{{ section.id }} .footer__link-grid a {
+    display: inline-flex;
+    width: fit-content;
+    line-height: 1.4;
+    margin: 0;
+  }
+
+
+  /* =========================================================
+     NEWSLETTER
+     ========================================================= */
+
+  #shopify-section-{{ section.id }} .footer__newsletter-form {
+    width: 100%;
+    max-width: 430px;
+    margin: 20px 0 0;
+  }
+
+  #shopify-section-{{ section.id }} .footer__newsletter-form .input {
+    width: 100%;
+  }
+
+  #shopify-section-{{ section.id }} .footer__newsletter-form .input__field {
+    width: 100%;
+    min-width: 0;
+  }
+
+
+  /* =========================================================
+     SOCIAL NOTE
+     ========================================================= */
+
+  #shopify-section-{{ section.id }} .footer__social-note {
+    margin: 0 0 16px;
+  }
+
+
+  /* =========================================================
+     FOOTER BOTTOM
+     ========================================================= */
+
+  #shopify-section-{{ section.id }} .footer__aside {
+    margin-top: 0;
+    padding-top: 24px;
+    padding-bottom: 24px;
+
+    border-top: 1px solid rgba(var(--border-color), 0.6);
+  }
+
+  #shopify-section-{{ section.id }} .footer__copyright {
+    display: inline-flex;
+    align-items: center;
+
+    margin: 0;
+    line-height: 1.4;
+  }
+
+
+  /* =========================================================
+     TABLET
+     ≤ 999px
+
+     Structure:
+     Brand + Description
+     Shop | Customer Care
+     Newsletter
+     ========================================================= */
+
+  @media screen and (max-width: 999px) {
+
+    #shopify-section-{{ section.id }} .footer .container {
+      width: min(calc(100% - 64px), 900px);
+    }
+
+    #shopify-section-{{ section.id }} .footer__inner {
+      padding-top: 48px;
+      padding-bottom: 32px;
+    }
+
+    #shopify-section-{{ section.id }} .footer__item-list {
+      --footer-column-gap: clamp(24px, 4vw, 48px);
+
+      display: grid;
+
+      grid-template-columns:
+        minmax(0, 1fr)
+        minmax(0, 1fr);
+
+      column-gap: var(--footer-column-gap);
+      row-gap: 36px;
+    }
+
+
+    /* Brand occupies the entire first row */
+
+    #shopify-section-{{ section.id }} .footer__item--text {
+      grid-column: 1 / -1;
+
+      margin-right: 0;
+      padding-right: 0;
+    }
+
+
+    /* Shop + Customer Care stay side by side */
+
+    #shopify-section-{{ section.id }} .footer__item--links {
+      width: 100%;
+      min-width: 0;
+    }
+
+
+    /* Newsletter occupies entire row below */
+
+    #shopify-section-{{ section.id }} .footer__item--newsletter {
+      grid-column: 1 / -1;
+
+      width: 100%;
+      min-width: 0;
+    }
+
+
+    #shopify-section-{{ section.id }} .footer__brand-text {
+      max-width: 420px;
+    }
+
+    #shopify-section-{{ section.id }} .footer__newsletter-form {
+      max-width: 100%;
+    }
+  }
+
+
+  /* =========================================================
+     MOBILE
+     ≤ 640px
+
+     Structure:
+     Brand + Description
+     Shop | Customer Care
+     Newsletter
+     ========================================================= */
+
+  @media screen and (max-width: 640px) {
+
+    #shopify-section-{{ section.id }} .footer .container {
+      width: calc(100% - 40px);
+    }
+
+    #shopify-section-{{ section.id }} .footer__inner {
+      padding-top: 36px;
+      padding-bottom: 28px;
+    }
+
+
+    /* Main mobile grid */
+
+    #shopify-section-{{ section.id }} .footer__item-list {
+      display: grid;
+
+      grid-template-columns:
+        minmax(0, 1fr)
+        minmax(0, 1fr);
+
+      column-gap: 20px;
+      row-gap: 32px;
+
+      width: 100%;
+    }
+
+
+    /* =====================================================
+       1. BRAND + DESCRIPTION
+       Full width
+       ===================================================== */
+
+    #shopify-section-{{ section.id }} .footer__item--text {
+      grid-column: 1 / -1;
+
+      width: 100%;
+      margin-right: 0;
+      padding-right: 0;
+    }
+
+
+    /* =====================================================
+       2. SHOP + CUSTOMER CARE
+       Side by side
+       ===================================================== */
+
+    #shopify-section-{{ section.id }} .footer__item--links {
+      width: 100%;
+      min-width: 0;
+    }
+
+
+    /* =====================================================
+       3. NEWSLETTER
+       Full width below links
+       ===================================================== */
+
+    #shopify-section-{{ section.id }} .footer__item--newsletter {
+      grid-column: 1 / -1;
+
+      width: 100%;
+      min-width: 0;
+    }
+
+
+    /* =====================================================
+       MOBILE BRAND
+       ===================================================== */
+
+    #shopify-section-{{ section.id }} .footer__brand-name {
+      margin-bottom: 10px;
+      font-size: 22px;
+    }
+
+    #shopify-section-{{ section.id }} .footer__brand-text {
+      max-width: 100%;
+    }
+
+
+    /* =====================================================
+       MOBILE HEADINGS
+       ===================================================== */
+
+    #shopify-section-{{ section.id }} .footer__item-title {
+      margin-bottom: 12px;
+    }
+
+
+    /* =====================================================
+       MOBILE LINKS
+       ===================================================== */
+
+    #shopify-section-{{ section.id }} .footer__link-grid {
+      gap: 9px;
+    }
+
+
+    /* =====================================================
+       MOBILE NEWSLETTER
+       ===================================================== */
+
+    #shopify-section-{{ section.id }} .footer__newsletter-form {
+      width: 100%;
+      max-width: 100%;
+      margin-top: 16px;
+    }
+
+
+    /* =====================================================
+       MOBILE BOTTOM
+       ===================================================== */
+
+    #shopify-section-{{ section.id }} .footer__aside {
+      padding-top: 20px;
+      padding-bottom: 20px;
+    }
+  }
+</style>
+
+
+<footer class="footer {% if settings.footer_background == settings.background %}footer--bordered{% endif %}">
+  <div class="container">
+
+    <div class="footer__inner">
+
+      <div class="footer__item-list">
+
+        <!-- Brand -->
+
+        <div class="footer__item footer__item--text is-first">
+
+          <h2 class="footer__brand-name heading">
+            Nasir Book Depot
+          </h2>
+
+          <div class="footer__brand-text text--subdued">
+
+            <p>
+              Explore English, Urdu, and Hindi books curated for readers, students, and book lovers.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <!-- Shop -->
+
+        <div class="footer__item footer__item--links">
+
+          <p class="footer__item-title heading heading--small">
+            Shop
+          </p>
+
+          <div class="footer__item-content">
+
+            <nav aria-label="Shop footer links">
+
+              <ul class="footer__link-grid linklist list--unstyled" role="list">
+
+                <li class="linklist__item">
+                  <a href="/collections/all" class="link--faded">
+                    All Books
+                  </a>
+                </li>
+
+                <li class="linklist__item">
+                  <a href="/collections/urdu-books" class="link--faded">
+                    Urdu Books
+                  </a>
+                </li>
+
+                <li class="linklist__item">
+                  <a href="/collections/hindi-books" class="link--faded">
+                    Hindi Books
+                  </a>
+                </li>
+
+                <li class="linklist__item">
+                  <a href="/collections/english-books" class="link--faded">
+                    English Books
+                  </a>
+                </li>
+
+                <li class="linklist__item">
+                  <a href="/cart" class="link--faded">
+                    Cart
+                  </a>
+                </li>
+
+              </ul>
+
+            </nav>
+
+          </div>
+
+        </div>
+
+
+        <!-- Customer Care -->
+
+        <div class="footer__item footer__item--links">
+
+          <p class="footer__item-title heading heading--small">
+            Customer Care
+          </p>
+
+          <div class="footer__item-content">
+
+            <nav aria-label="Customer care footer links">
+
+              <ul class="footer__link-grid linklist list--unstyled" role="list">
+
+                <li class="linklist__item">
+                  <a href="/pages/contact" class="link--faded">
+                    Contact
+                  </a>
+                </li>
+
+                <li class="linklist__item">
+                  <a href="/customer_authentication/redirect?locale=en" class="link--faded">
+                    Login
+                  </a>
+                </li>
+
+                {%- if shop.shipping_policy != blank -%}
+
+                  <li class="linklist__item">
+                    <a href="{{ shop.shipping_policy.url }}" class="link--faded">
+                      Shipping Policy
+                    </a>
+                  </li>
+
+                {%- endif -%}
+
+
+                {%- if shop.refund_policy != blank -%}
+
+                  <li class="linklist__item">
+                    <a href="{{ shop.refund_policy.url }}" class="link--faded">
+                      Return &amp; Refund Policy
+                    </a>
+                  </li>
+
+                {%- endif -%}
+
+
+                {%- if shop.privacy_policy != blank -%}
+
+                  <li class="linklist__item">
+                    <a href="{{ shop.privacy_policy.url }}" class="link--faded">
+                      Privacy Policy
+                    </a>
+                  </li>
+
+                {%- endif -%}
+
+              </ul>
+
+            </nav>
+
+          </div>
+
+        </div>
+
+
+        <!-- Newsletter -->
+
+        <div class="footer__item footer__item--newsletter">
+
+          <p class="footer__item-title heading heading--small">
+            Newsletter
+          </p>
+
+          <div class="footer__item-content">
+
+            <p>
+              Get updates on new arrivals, featured books, and special offers.
+            </p>
+
+
+            {%- form 'customer',
+              id: 'footer-newsletter',
+              class: 'footer__newsletter-form form'
+            -%}
+
+
+              {%- if form.posted_successfully? -%}
+
+                <div class="form__banner banner banner--success">
+
+                  <span class="banner__ribbon">
+                    {% render 'icon' with 'form-success' %}
+                  </span>
+
+                  <p class="banner__content">
+                    {{ 'footer.newsletter.success' | t }}
+                  </p>
+
+                </div>
+
+
+              {%- else -%}
+
+
+                {%- if form.errors -%}
+
+                  <div class="form__banner banner banner--error">
+
+                    <span class="banner__ribbon">
+                      {% render 'icon' with 'form-error' %}
+                    </span>
+
+                    <p class="banner__content">
+                      {{ form.errors.translated_fields['email'] }}
+                      {{ form.errors.messages['email'] }}
+                    </p>
+
+                  </div>
+
+                {%- endif -%}
+
+
+                <input
+                  type="hidden"
+                  name="contact[tags]"
+                  value="newsletter"
+                >
+
+
+                <div class="input">
+
+                  <input
+                    type="email"
+                    id="footer-contact-email"
+                    name="contact[email]"
+                    class="input__field input__field--text"
+                    autocomplete="email"
+                    required
+                  >
+
+                  <label
+                    for="footer-contact-email"
+                    class="input__label"
+                  >
+                    {{ 'footer.newsletter.email' | t }}
+                  </label>
+
+                  <button
+                    type="submit"
+                    class="input__submit-icon tap-area"
+                    title="{{ 'footer.newsletter.submit' | t }}"
+                  >
+                    {% render 'icon',
+                      with: 'nav-arrow-right',
+                      direction_aware: true
+                    %}
+                  </button>
+
+                </div>
+
+              {%- endif -%}
+
+            {%- endform -%}
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- Footer bottom -->
+
+    <div class="footer__aside">
+
+      {%- assign country_selector = false -%}
+      {%- assign locale_selector = false -%}
+
+
+      {%- if section.settings.show_country_selector
+        and localization.available_countries.size > 1
+      -%}
+
+        {%- assign country_selector = true -%}
+
+      {%- endif -%}
+
+
+      {%- if section.settings.show_locale_selector
+        and localization.available_languages.size > 1
+      -%}
+
+        {%- assign locale_selector = true -%}
+
+      {%- endif -%}
+
+
+      {%- if country_selector or locale_selector -%}
+
+        {%- form 'localization',
+          id: 'localization_form_footer',
+          class: 'footer__cross-border'
+        -%}
+
+
+          {%- if country_selector -%}
+
+            <div class="popover-container">
+
+              <input
+                type="hidden"
+                name="country_code"
+                value="{{ localization.country.iso_code }}"
+              >
+
+              <span class="visually-hidden">
+                {{ 'footer.general.country' | t }}
+              </span>
+
+
+              <button
+                type="button"
+                is="toggle-button"
+                class="select select--small text--xsmall"
+                aria-expanded="false"
+                aria-controls="footer-currency-selector"
+              >
+
+                {{ localization.country.name }}
+
+                ({{ localization.country.currency.iso_code }}
+
+                {% if localization.country.currency.symbol %}
+                  {{ localization.country.currency.symbol }}
+                {% endif %})
+
+                {% render 'icon',
+                  with: 'chevron',
+                  width: 9,
+                  height: 6,
+                  inline: true
+                %}
+
+              </button>
+
+
+              <popover-content
+                id="footer-currency-selector"
+                class="popover popover--top popover--left popover--small"
+              >
+
+                <span class="popover__overlay"></span>
+
+                <header class="popover__header">
+
+                  <span class="popover__title heading h6">
+                    {{ 'footer.general.country' | t }}
+                  </span>
+
+                  <button
+                    type="button"
+                    class="popover__close-button tap-area tap-area--large"
+                    data-action="close"
+                    title="{{ 'general.accessibility.close' | t | escape }}"
+                  >
+                    {% render 'icon' with 'close' %}
+                  </button>
+
+                </header>
+
+
+                <div class="popover__content popover__content--restrict">
+
+                  <div class="popover__choice-list">
+
+                    {%- for country in localization.available_countries -%}
+
+                      <button
+                        type="submit"
+                        name="country_code"
+                        value="{{ country.iso_code }}"
+                        class="popover__choice-item"
+                      >
+
+                        <span
+                          class="popover__choice-label"
+                          {% if country.iso_code == localization.country.iso_code %}
+                            aria-current="true"
+                          {% endif %}
+                        >
+
+                          {{ country.name }}
+
+                          ({{ country.currency.iso_code }}
+
+                          {% if country.currency.symbol %}
+                            {{ country.currency.symbol }}
+                          {% endif %})
+
+                        </span>
+
+                      </button>
+
+                    {%- endfor -%}
+
+                  </div>
+
+                </div>
+
+              </popover-content>
+
+            </div>
+
+          {%- endif -%}
+
+
+          {%- if locale_selector -%}
+
+            <div class="popover-container">
+
+              <input
+                type="hidden"
+                name="locale_code"
+                value="{{ localization.language.iso_code }}"
+              >
+
+              <span class="visually-hidden">
+                {{ 'footer.general.language' | t }}
+              </span>
+
+
+              <button
+                type="button"
+                is="toggle-button"
+                class="select select--small text--xsmall"
+                aria-expanded="false"
+                aria-controls="footer-locale-selector"
+              >
+
+                {{ localization.language.endonym_name | capitalize }}
+
+                {% render 'icon',
+                  with: 'chevron',
+                  width: 9,
+                  height: 6,
+                  inline: true
+                %}
+
+              </button>
+
+
+              <popover-content
+                id="footer-locale-selector"
+                class="popover popover--top popover--small"
+              >
+
+                <span class="popover__overlay"></span>
+
+                <header class="popover__header">
+
+                  <span class="popover__title heading h6">
+                    {{ 'footer.general.language' | t }}
+                  </span>
+
+                  <button
+                    type="button"
+                    class="popover__close-button tap-area tap-area--large"
+                    data-action="close"
+                    title="{{ 'general.accessibility.close' | t | escape }}"
+                  >
+                    {% render 'icon' with 'close' %}
+                  </button>
+
+                </header>
+
+
+                <div class="popover__content">
+
+                  <div class="popover__choice-list">
+
+                    {%- for language in localization.available_languages -%}
+
+                      <button
+                        type="submit"
+                        name="locale_code"
+                        value="{{ language.iso_code }}"
+                        class="popover__choice-item"
+                      >
+
+                        <span
+                          class="popover__choice-label"
+                          {% if language.iso_code == localization.language.iso_code %}
+                            aria-current="true"
+                          {% endif %}
+                        >
+                          {{ language.endonym_name | capitalize }}
+                        </span>
+
+                      </button>
+
+                    {%- endfor -%}
+
+                  </div>
+
+                </div>
+
+              </popover-content>
+
+            </div>
+
+          {%- endif -%}
+
+
+        {%- endform -%}
+
+      {%- endif -%}
+
+
+      <span class="footer__copyright text--xsmall text--subdued">
+
+        {{ shop.name }}
+
+        <span class="square-separator square-separator--block square-separator--subdued"></span>
+
+        {{ powered_by_link | replace: '<a', '<a class="link--faded"' }}
+
+      </span>
+
+
+      {%- if section.settings.show_payment_icons
+        and shop.enabled_payment_types.size > 0
+      -%}
+
+        <div class="footer__payment-methods">
+
+          <span class="footer__payment-methods-label text--xsmall text--subdued">
+            {{ 'footer.general.we_accept' | t }}
+          </span>
+
+          <div class="payment-methods-list payment-methods-list--auto">
+
+            {% for type in shop.enabled_payment_types %}
+              {{ type | payment_type_svg_tag }}
+            {% endfor %}
+
+          </div>
+
+        </div>
+
+      {%- endif -%}
+
+    </div>
+
+  </div>
+</footer>
+
+
+{%- if section.settings.show_cookie_bar -%}
+
+  <cookie-bar
+    section="{{ section.id }}"
+    hidden
+    class="cookie-bar text--xsmall"
+  >
+
+    {%- if section.settings.cookie_bar_title != blank -%}
+
+      <p class="heading heading--xsmall">
+        {{ section.settings.cookie_bar_title }}
+      </p>
+
+    {%- endif -%}
+
+
+    {%- if section.settings.cookie_bar_content != blank -%}
+
+      {{- section.settings.cookie_bar_content -}}
+
+    {%- endif -%}
+
+
+    <div class="cookie-bar__actions">
+
+      <button
+        class="button button--text button--primary button--small text--xsmall"
+        data-action="accept-policy"
+      >
+        {{ 'footer.cookie_bar.accept' | t }}
+      </button>
+
+      <button
+        class="button button--text button--ternary button--small text--xsmall"
+        data-action="decline-policy"
+      >
+        {{ 'footer.cookie_bar.decline' | t }}
+      </button>
+
+    </div>
+
+  </cookie-bar>
+
+{%- endif -%}
+
+
+{% schema %}
+{
+  "name": "Footer",
+  "class": "shopify-section--footer",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_payment_icons",
+      "label": "Show payment icons",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Country/region selector",
+      "info": "To add a country/region, go to your currency settings."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_country_selector",
+      "label": "Show country/region selector",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Language selector",
+      "info": "To add a language, go to your language settings."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_locale_selector",
+      "label": "Show language selector",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Customer privacy bar"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cookie_bar",
+      "label": "Show privacy bar",
+      "info": "Privacy bar will only be visible if it fulfills the conditions of the Shopify Customer Privacy API",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "cookie_bar_title",
+      "label": "Title",
+      "default": "Cookie policy"
+    },
+    {
+      "type": "richtext",
+      "id": "cookie_bar_content",
+      "label": "Content",
+      "default": "<p>I agree to the processing of my data in accordance with the conditions set out in the policy of Privacy.</p>"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,105 @@
+{% schema %}
+{
+  "name": "Wholesale Hero",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Wholesale Partnerships"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Partner with Nasir Book Depot for quality Islamic books, general books, and stationery at competitive wholesale prices."
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button text",
+      "default": "Contact Us"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link",
+      "default": "/pages/contact"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Wholesale Hero"
+    }
+  ]
+}
+{% endschema %}
+
+<style>
+  #shopify-section-{{ section.id }} .nbd-wholesale-hero {
+    background: linear-gradient(135deg, rgb(var(--nbd-primary-green)), #1a3d2d);
+    color: rgb(var(--nbd-white));
+    padding: var(--vertical-breather) 0;
+    text-align: center;
+  }
+
+  #shopify-section-{{ section.id }} .nbd-wholesale-hero__container {
+    max-width: var(--nbd-container-max-width);
+    margin: 0 auto;
+    padding: 0 var(--nbd-container-gutter-mobile);
+  }
+
+  @media screen and (min-width: 741px) {
+    #shopify-section-{{ section.id }} .nbd-wholesale-hero__container {
+      padding: 0 var(--nbd-container-gutter-tablet);
+    }
+  }
+
+  @media screen and (min-width: 1200px) {
+    #shopify-section-{{ section.id }} .nbd-wholesale-hero__container {
+      padding: 0 var(--nbd-container-gutter-desktop);
+    }
+  }
+
+  #shopify-section-{{ section.id }} .nbd-wholesale-hero__title {
+    font-size: var(--nbd-h1-mobile);
+    line-height: 1.1;
+    font-weight: 700;
+    margin-bottom: var(--nbd-space-4);
+  }
+
+  @media screen and (min-width: 741px) {
+    #shopify-section-{{ section.id }} .nbd-wholesale-hero__title {
+      font-size: var(--nbd-h1-tablet);
+    }
+  }
+
+  @media screen and (min-width: 1200px) {
+    #shopify-section-{{ section.id }} .nbd-wholesale-hero__title {
+      font-size: var(--nbd-h1-desktop);
+    }
+  }
+
+  #shopify-section-{{ section.id }} .nbd-wholesale-hero__subtitle {
+    font-size: 16px;
+    line-height: 1.6;
+    margin-bottom: var(--nbd-space-6);
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+</style>
+
+<section class="section section--flush nbd-wholesale-hero">
+  <div class="nbd-wholesale-hero__container">
+    <h1 class="nbd-wholesale-hero__title">{{ section.settings.title }}</h1>
+    
+    {%- if section.settings.subtitle != blank -%}
+      <p class="nbd-wholesale-hero__subtitle">{{ section.settings.subtitle }}</p>
+    {%- endif -%}
+
+    {%- if section.settings.button_text != blank -%}
+      <a href="{{ section.settings.button_link }}" class="nbd-button--secondary">{{ section.settings.button_text }}</a>
+    {%- endif -%}
+  </div>
+</section>

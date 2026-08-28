@@ -1,0 +1,117 @@
+{% schema %}
+{
+  "name": "Wholesale Benefits",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section title",
+      "default": "Why Buy Wholesale From Us"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "benefit",
+      "name": "Benefit",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Competitive Pricing"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "Wholesale rates that help you maximize your margins"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Wholesale Benefits"
+    }
+  ]
+}
+{% endschema %}
+
+<style>
+  #shopify-section-{{ section.id }} .nbd-wholesale-benefits {
+    padding: var(--vertical-breather) 0;
+  }
+
+  #shopify-section-{{ section.id }} .nbd-wholesale-benefits__container {
+    max-width: var(--nbd-container-max-width);
+    margin: 0 auto;
+    padding: 0 var(--nbd-container-gutter-mobile);
+  }
+
+  @media screen and (min-width: 741px) {
+    #shopify-section-{{ section.id }} .nbd-wholesale-benefits__container {
+      padding: 0 var(--nbd-container-gutter-tablet);
+    }
+  }
+
+  @media screen and (min-width: 1200px) {
+    #shopify-section-{{ section.id }} .nbd-wholesale-benefits__container {
+      padding: 0 var(--nbd-container-gutter-desktop);
+    }
+  }
+
+  #shopify-section-{{ section.id }} .nbd-wholesale-benefits__title {
+    font-size: var(--nbd-h2-mobile);
+    font-weight: 700;
+    color: rgb(var(--nbd-dark-gray));
+    margin-bottom: var(--nbd-space-6);
+    text-align: center;
+  }
+
+  @media screen and (min-width: 741px) {
+    #shopify-section-{{ section.id }} .nbd-wholesale-benefits__title {
+      font-size: var(--nbd-h2-tablet);
+    }
+  }
+
+  @media screen and (min-width: 1200px) {
+    #shopify-section-{{ section.id }} .nbd-wholesale-benefits__title {
+      font-size: var(--nbd-h2-desktop);
+    }
+  }
+
+  #shopify-section-{{ section.id }} .nbd-benefits-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--nbd-space-5);
+  }
+
+  @media screen and (min-width: 741px) {
+    #shopify-section-{{ section.id }} .nbd-benefits-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media screen and (min-width: 1200px) {
+    #shopify-section-{{ section.id }} .nbd-benefits-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>
+
+<section class="section nbd-wholesale-benefits">
+  <div class="nbd-wholesale-benefits__container">
+    {%- if section.settings.title != blank -%}
+      <h2 class="nbd-wholesale-benefits__title">{{ section.settings.title }}</h2>
+    {%- endif -%}
+
+    <div class="nbd-benefits-grid">
+      {%- for block in section.blocks -%}
+        <div class="nbd-benefit-card" {{ block.shopify_attributes }}>
+          <h3 class="nbd-benefit-card__title">{{ block.settings.title }}</h3>
+          <p class="nbd-benefit-card__description">{{ block.settings.description }}</p>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>

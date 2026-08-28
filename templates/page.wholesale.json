@@ -1,0 +1,64 @@
+{
+  "sections": {
+    "wholesale-hero": {
+      "type": "wholesale-hero",
+      "settings": {
+        "title": "Wholesale Partnerships",
+        "subtitle": "Partner with Nasir Book Depot for quality Islamic books, general books, and stationery at competitive wholesale prices.",
+        "button_text": "Contact Us",
+        "button_link": "/pages/contact"
+      }
+    },
+    "wholesale-benefits": {
+      "type": "wholesale-benefits",
+      "blocks": [
+        {
+          "type": "benefit",
+          "settings": {
+            "title": "Competitive Pricing",
+            "description": "Wholesale rates that help you maximize your margins"
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "title": "Quality Products",
+            "description": "Curated selection of Islamic books, general books, and stationery"
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "title": "Reliable Service",
+            "description": "Prompt delivery and dedicated customer support"
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "title": "Flexible Orders",
+            "description": "No minimum order requirements for most products"
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "title": "Bulk Discounts",
+            "description": "Additional savings on large quantity orders"
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "title": "Established 1988",
+            "description": "Over 30 years of trusted service to the community"
+          }
+        }
+      ]
+    }
+  },
+  "order": [
+    "wholesale-hero",
+    "wholesale-benefits"
+  ]
+}

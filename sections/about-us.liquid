@@ -1,0 +1,1229 @@
+{% liquid
+  assign section_id = 'nbd-about-' | append: section.id
+  assign eyebrow = section.settings.eyebrow | default: 'Since 1988'
+  assign heading = section.settings.heading | default: 'Nasir Book Depot'
+  assign intro = section.settings.intro | default: 'Founded by Mr. Nasir Ahmed in 1988, Nasir Book Depot has served the Hazrat Nizamuddin community in New Delhi with Islamic books and religious items built on quality, reasonable prices, and reliable service.'
+  assign story_heading = section.settings.story_heading | default: 'A Family Legacy Rooted In Service'
+  assign story_text = section.settings.story_text | default: 'Nasir Book Depot began in Hazrat Nizamuddin, New Delhi, with a clear purpose: to make Islamic books and religious items available with dependable service and fair value. The work started by Mr. Nasir Ahmed continues as a family legacy, shaped by the trust of the community and a commitment to quality.'
+  assign commitment_heading = section.settings.commitment_heading | default: 'Our Commitment'
+  assign commitment_text = section.settings.commitment_text | default: 'We remain focused on offering Islamic books, Tasbeeh, Quran Sharif boxes, Rehal, and other religious items with care, reasonable prices, and reliable service.'
+  assign primary_link = section.settings.button_link | default: '/collections/all'
+  assign secondary_link = section.settings.secondary_button_link | default: '/pages/contact'
+  assign final_primary_link = section.settings.final_primary_link | default: '/collections/all'
+  assign final_secondary_link = section.settings.final_secondary_link | default: '/pages/contact'
+%}
+
+<section
+  id="{{ section_id }}"
+  class="nbd-about"
+  style="
+    --nbd-bg: {% if section.settings.background_color == 'rgba(0,0,0,0)' %}{{ settings.background }}{% else %}{{ section.settings.background_color }}{% endif %};
+    --nbd-surface: {% if section.settings.surface_color == 'rgba(0,0,0,0)' %}{{ settings.secondary_background }}{% else %}{{ section.settings.surface_color }}{% endif %};
+    --nbd-text: {% if section.settings.text_color == 'rgba(0,0,0,0)' %}{{ settings.heading_color }}{% else %}{{ section.settings.text_color }}{% endif %};
+    --nbd-muted: {% if section.settings.muted_text_color == 'rgba(0,0,0,0)' %}{{ settings.text_color }}{% else %}{{ section.settings.muted_text_color }}{% endif %};
+    --nbd-accent: {% if section.settings.accent_color == 'rgba(0,0,0,0)' %}{{ settings.secondary_button_background }}{% else %}{{ section.settings.accent_color }}{% endif %};
+    --nbd-border: {% if section.settings.border_color == 'rgba(0,0,0,0)' %}{{ settings.background | color_mix: settings.text_color, 85 }}{% else %}{{ section.settings.border_color }}{% endif %};
+    --nbd-max-width: {{ section.settings.max_width }}px;
+    --nbd-section-space: {{ section.settings.section_spacing }}px;
+    --nbd-radius: {{ section.settings.image_radius }}px;
+    --nbd-heading-font: {{ section.settings.heading_font_stack }};
+    --nbd-body-font: {{ section.settings.body_font_stack }};
+    --nbd-green: {% if section.settings.green_color == 'rgba(0,0,0,0)' %}{{ settings.primary_button_background }}{% else %}{{ section.settings.green_color }}{% endif %};
+    --nbd-gold: {% if section.settings.gold_color == 'rgba(0,0,0,0)' %}{{ settings.secondary_button_background }}{% else %}{{ section.settings.gold_color }}{% endif %};
+    --nbd-charcoal: {% if section.settings.charcoal_color == 'rgba(0,0,0,0)' %}{{ settings.heading_color }}{% else %}{{ section.settings.charcoal_color }}{% endif %};
+  "
+>
+  <div class="nbd-about__inner">
+    <div class="nbd-about__hero nbd-reveal">
+      <div class="nbd-about__hero-copy">
+        {% if eyebrow != blank %}
+          <p class="nbd-about__eyebrow">{{ eyebrow | escape }}</p>
+        {% endif %}
+
+        {% if heading != blank %}
+          <h1 class="nbd-about__title">{{ heading | escape }}</h1>
+        {% endif %}
+
+        {% if intro != blank %}
+          <div class="nbd-about__intro rte">
+            {{ intro | escape | newline_to_br }}
+          </div>
+        {% endif %}
+
+        <dl class="nbd-about__facts" aria-label="Nasir Book Depot facts">
+          <div>
+            <dt>{{ section.settings.fact_1_label | default: 'Founded' | escape }}</dt>
+            <dd>{{ section.settings.fact_1_value | default: '1988' | escape }}</dd>
+          </div>
+          <div>
+            <dt>{{ section.settings.fact_2_label | default: 'Founder' | escape }}</dt>
+            <dd>{{ section.settings.fact_2_value | default: 'Mr. Nasir Ahmed' | escape }}</dd>
+          </div>
+          <div>
+            <dt>{{ section.settings.fact_3_label | default: 'Location' | escape }}</dt>
+            <dd>{{ section.settings.fact_3_value | default: 'Hazrat Nizamuddin, New Delhi' | escape }}</dd>
+          </div>
+        </dl>
+
+        {% if section.settings.button_label != blank or section.settings.secondary_button_label != blank %}
+          <div class="nbd-about__actions">
+            {% if section.settings.button_label != blank %}
+              <a class="nbd-about__button nbd-about__button--primary" href="{{ primary_link }}">
+                {{ section.settings.button_label | escape }}
+                <span aria-hidden="true">→</span>
+              </a>
+            {% endif %}
+
+            {% if section.settings.secondary_button_label != blank %}
+              <a class="nbd-about__button nbd-about__button--secondary" href="{{ secondary_link }}">
+                {{ section.settings.secondary_button_label | escape }}
+              </a>
+            {% endif %}
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="nbd-about__hero-media" aria-label="{{ section.settings.hero_image_alt | escape }}">
+        {% if section.settings.hero_image != blank %}
+          {{
+            section.settings.hero_image
+            | image_url: width: 1400
+            | image_tag:
+              loading: 'eager',
+              fetchpriority: 'high',
+              widths: '420, 640, 820, 1100, 1400',
+              sizes: '(min-width: 990px) 44vw, 92vw',
+              alt: section.settings.hero_image_alt,
+              class: 'nbd-about__image'
+          }}
+        {% else %}
+          <div class="nbd-about__placeholder" role="img" aria-label="Minimal line art placeholder for Islamic books and religious items">
+            <svg viewBox="0 0 520 620" aria-hidden="true" focusable="false">
+              <path d="M104 124h208c42 0 76 34 76 76v260c0 20-16 36-36 36H104V124Z" />
+              <path d="M104 496c0-20 16-36 36-36h248" />
+              <path d="M164 190h142M164 236h168M164 282h116" />
+              <path d="M358 132c32 34 50 78 50 126s-18 92-50 126" />
+              <path d="M424 202c18 14 30 36 30 60s-12 46-30 60" />
+              <circle cx="184" cy="378" r="18" />
+              <circle cx="236" cy="378" r="18" />
+              <circle cx="288" cy="378" r="18" />
+            </svg>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="nbd-about__story-grid">
+      <article class="nbd-about__story nbd-reveal">
+        <p class="nbd-about__kicker">{{ section.settings.story_eyebrow | default: 'Our Story' | escape }}</p>
+        {% if story_heading != blank %}
+          <h2>{{ story_heading | escape }}</h2>
+        {% endif %}
+        {% if story_text != blank %}
+          <div class="rte">{{ story_text | escape | newline_to_br }}</div>
+        {% endif %}
+      </article>
+
+      <div class="nbd-about__side-note nbd-reveal">
+        <span>{{ section.settings.side_note_label | default: 'Built On' | escape }}</span>
+        <p>{{ section.settings.side_note_text | default: 'Quality, reasonable prices, reliable service, and community trust.' | escape }}</p>
+      </div>
+    </div>
+
+    <div class="nbd-about__quote-band nbd-reveal">
+      <span aria-hidden="true">“</span>
+      <p>{{ section.settings.quote_text | default: 'A family legacy shaped by Islamic books, religious items, reasonable prices, and reliable service.' | escape }}</p>
+    </div>
+
+    <div class="nbd-about__products">
+      <div class="nbd-about__section-heading nbd-reveal">
+        <p class="nbd-about__kicker">{{ section.settings.products_eyebrow | default: 'What We Offer' | escape }}</p>
+        <h2>{{ section.settings.products_heading | default: 'Islamic Books And Religious Items' | escape }}</h2>
+      </div>
+
+      <div class="nbd-about__cards" role="list">
+        {% for block in section.blocks %}
+          {% if block.type == 'category' %}
+            <article class="nbd-about__card nbd-reveal" role="listitem" {{ block.shopify_attributes }}>
+              <div class="nbd-about__card-media">
+                {% if block.settings.image != blank %}
+                  {{
+                    block.settings.image
+                    | image_url: width: 720
+                    | image_tag:
+                      loading: 'lazy',
+                      widths: '260, 360, 520, 720',
+                      sizes: '(min-width: 990px) 25vw, (min-width: 640px) 42vw, 92vw',
+                      alt: block.settings.image_alt,
+                      class: 'nbd-about__card-image'
+                  }}
+                {% else %}
+                  <div class="nbd-about__card-placeholder" aria-hidden="true">
+                    <svg viewBox="0 0 220 180" focusable="false">
+                      <path d="M44 46h78c16 0 30 13 30 30v66H44V46Z" />
+                      <path d="M44 142c0-11 9-20 20-20h88" />
+                      <path d="M74 74h48M74 96h62" />
+                      <circle cx="158" cy="82" r="10" />
+                      <circle cx="180" cy="82" r="10" />
+                      <circle cx="169" cy="104" r="10" />
+                    </svg>
+                  </div>
+                {% endif %}
+              </div>
+              <div class="nbd-about__card-copy">
+                <h3>{{ block.settings.title | escape }}</h3>
+                {% if block.settings.text != blank %}
+                  <p>{{ block.settings.text | escape }}</p>
+                {% endif %}
+              </div>
+            </article>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="nbd-about__commitment nbd-reveal">
+      <div>
+        <p class="nbd-about__kicker">{{ section.settings.commitment_eyebrow | default: 'Community And Care' | escape }}</p>
+        {% if commitment_heading != blank %}
+          <h2>{{ commitment_heading | escape }}</h2>
+        {% endif %}
+      </div>
+      {% if commitment_text != blank %}
+        <div class="rte">{{ commitment_text | escape | newline_to_br }}</div>
+      {% endif %}
+    </div>
+
+    <div class="nbd-about__final-cta nbd-reveal">
+      <div class="nbd-about__final-copy">
+        <p class="nbd-about__kicker">{{ section.settings.final_cta_eyebrow | default: 'Visit Nasir Book Depot' | escape }}</p>
+        <h2>{{ section.settings.final_cta_heading | default: 'Explore Islamic Books And Religious Items' | escape }}</h2>
+        {% if section.settings.final_cta_text != blank %}
+          <p>{{ section.settings.final_cta_text | escape }}</p>
+        {% endif %}
+      </div>
+
+      {% if section.settings.final_primary_label != blank or section.settings.final_secondary_label != blank %}
+        <div class="nbd-about__final-actions">
+          {% if section.settings.final_primary_label != blank %}
+            <a class="nbd-about__button nbd-about__button--light" href="{{ final_primary_link }}">
+              {{ section.settings.final_primary_label | escape }}
+              <span aria-hidden="true">→</span>
+            </a>
+          {% endif %}
+
+          {% if section.settings.final_secondary_label != blank %}
+            <a class="nbd-about__button nbd-about__button--gold" href="{{ final_secondary_link }}">
+              {{ section.settings.final_secondary_label | escape }}
+            </a>
+          {% endif %}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<style>
+  #{{ section_id }} {
+    background: var(--nbd-bg);
+    color: var(--nbd-text);
+    overflow: clip;
+    isolation: isolate;
+  }
+
+  #{{ section_id }} *,
+  #{{ section_id }} *::before,
+  #{{ section_id }} *::after {
+    box-sizing: border-box;
+  }
+
+  #{{ section_id }} .nbd-about__inner {
+    width: min(var(--nbd-max-width), calc(100% - 40px));
+    margin: 0 auto;
+    padding: clamp(18px, 3vw, 42px) 0 clamp(64px, 8vw, var(--nbd-section-space));
+  }
+
+  #{{ section_id }} .nbd-about__hero {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(320px, 1fr);
+    gap: clamp(32px, 5.5vw, 72px);
+    align-items: center;
+    min-height: auto;
+  }
+
+  #{{ section_id }} .nbd-about__hero-copy {
+    max-width: 560px;
+  }
+
+  #{{ section_id }} .nbd-about__eyebrow,
+  #{{ section_id }} .nbd-about__kicker {
+    margin: 0 0 18px;
+    color: var(--nbd-accent);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    line-height: 1.3;
+    text-transform: uppercase;
+  }
+
+  #{{ section_id }} .nbd-about__title,
+  #{{ section_id }} h2,
+  #{{ section_id }} h3 {
+    margin: 0;
+    color: var(--nbd-text);
+    font-family: var(--nbd-heading-font);
+    font-style: normal;
+    font-weight: 600;
+    letter-spacing: 0;
+  }
+
+  #{{ section_id }} .nbd-about__title {
+    max-width: 560px;
+    font-size: clamp(3rem, 5.25vw, 5.9rem);
+    line-height: 0.96;
+  }
+
+  #{{ section_id }} h2 {
+    font-size: clamp(2rem, 3vw, 3.35rem);
+    line-height: 1.08;
+  }
+
+  #{{ section_id }} h3 {
+    font-size: clamp(1.1rem, 1.45vw, 1.45rem);
+    line-height: 1.15;
+  }
+
+  #{{ section_id }} .rte,
+  #{{ section_id }} p,
+  #{{ section_id }} dd {
+    color: var(--nbd-muted);
+    font-family: var(--nbd-body-font);
+    font-style: normal;
+    font-weight: 400;
+  }
+
+  #{{ section_id }} .nbd-about__intro {
+    max-width: 520px;
+    margin-top: 22px;
+    font-size: clamp(0.98rem, 1.08vw, 1.08rem);
+    line-height: 1.72;
+  }
+
+  #{{ section_id }} .nbd-about__facts {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1px;
+    max-width: 520px;
+    margin: 32px 0 0;
+    background: var(--nbd-border);
+    border: 1px solid var(--nbd-border);
+    box-shadow: 0 24px 70px rgba(31, 41, 51, 0.05);
+  }
+
+  #{{ section_id }} .nbd-about__facts div {
+    min-width: 0;
+    padding: clamp(16px, 2.2vw, 24px);
+    background: var(--nbd-bg);
+  }
+
+  #{{ section_id }} .nbd-about__facts dt {
+    margin-bottom: 7px;
+    color: var(--nbd-green);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    line-height: 1.3;
+    text-transform: uppercase;
+  }
+
+  #{{ section_id }} .nbd-about__facts dd {
+    margin: 0;
+    color: var(--nbd-text);
+    font-size: clamp(0.95rem, 1.2vw, 1.1rem);
+    line-height: 1.45;
+  }
+
+  #{{ section_id }} .nbd-about__actions,
+  #{{ section_id }} .nbd-about__final-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+    margin-top: 30px;
+  }
+
+  #{{ section_id }} .nbd-about__button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    min-height: 48px;
+    padding: 13px 24px;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    font-family: var(--nbd-body-font);
+    font-size: 0.92rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    line-height: 1.2;
+    text-decoration: none;
+    transition: transform 180ms ease, background-color 180ms ease, border-color 180ms ease, color 180ms ease;
+  }
+
+  #{{ section_id }} .nbd-about__button--primary {
+    border-color: var(--nbd-green);
+    background: var(--nbd-green);
+    color: #ffffff;
+  }
+
+  #{{ section_id }} .nbd-about__button--secondary {
+    border-color: rgba(31, 77, 58, 0.28);
+    background: transparent;
+    color: var(--nbd-green);
+  }
+
+  #{{ section_id }} .nbd-about__button--light {
+    border-color: #faf7f0;
+    background: #faf7f0;
+    color: var(--nbd-charcoal);
+  }
+
+  #{{ section_id }} .nbd-about__button--gold {
+    border-color: var(--nbd-gold);
+    background: var(--nbd-gold);
+    color: var(--nbd-charcoal);
+  }
+
+  #{{ section_id }} .nbd-about__button:hover {
+    transform: translateY(-2px);
+  }
+
+  #{{ section_id }} .nbd-about__button--primary:hover,
+  #{{ section_id }} .nbd-about__button--secondary:hover {
+    background: var(--nbd-gold);
+    border-color: var(--nbd-gold);
+    color: var(--nbd-text);
+  }
+
+  #{{ section_id }} .nbd-about__button--light:hover,
+  #{{ section_id }} .nbd-about__button--gold:hover {
+    background: transparent;
+    border-color: #faf7f0;
+    color: #faf7f0;
+  }
+
+  #{{ section_id }} .nbd-about__button:focus-visible {
+    outline: 2px solid var(--nbd-accent);
+    outline-offset: 4px;
+  }
+
+  #{{ section_id }} .nbd-about__hero-media {
+    position: relative;
+    min-height: clamp(360px, 36vw, 520px);
+  }
+
+  #{{ section_id }} .nbd-about__hero-media::before {
+    content: "";
+    position: absolute;
+    inset: 10% -5% -5% 12%;
+    border: 1px solid rgba(196, 154, 69, 0.38);
+    border-radius: var(--nbd-radius);
+  }
+
+  #{{ section_id }} .nbd-about__image,
+  #{{ section_id }} .nbd-about__placeholder {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: clamp(360px, 36vw, 520px);
+    border-radius: var(--nbd-radius);
+    object-fit: cover;
+    box-shadow: 0 32px 90px rgba(31, 41, 51, 0.1);
+  }
+
+  #{{ section_id }} .nbd-about__placeholder,
+  #{{ section_id }} .nbd-about__card-placeholder {
+    display: grid;
+    place-items: center;
+    background:
+      linear-gradient(135deg, rgba(255, 255, 255, 0.92), rgba(250, 247, 240, 0.8)),
+      var(--nbd-surface);
+    border: 1px solid var(--nbd-border);
+  }
+
+  #{{ section_id }} svg {
+    width: min(78%, 420px);
+    height: auto;
+    fill: none;
+    stroke: var(--nbd-charcoal);
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 5;
+  }
+
+  #{{ section_id }} .nbd-about__story-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.72fr) minmax(240px, 0.28fr);
+    gap: clamp(28px, 5vw, 64px);
+    align-items: center;
+    margin-top: clamp(56px, 7vw, 92px);
+  }
+
+  #{{ section_id }} .nbd-about__story {
+    padding-top: clamp(26px, 4vw, 52px);
+    border-top: 1px solid rgba(31, 77, 58, 0.22);
+  }
+
+  #{{ section_id }} .nbd-about__story .rte,
+  #{{ section_id }} .nbd-about__commitment .rte {
+    max-width: 680px;
+    margin-top: 22px;
+    font-size: clamp(0.96rem, 1vw, 1.06rem);
+    line-height: 1.75;
+  }
+
+  #{{ section_id }} .nbd-about__side-note {
+    padding: clamp(24px, 3vw, 36px);
+    border: 1px solid var(--nbd-border);
+    background: var(--nbd-surface);
+    box-shadow: 0 24px 70px rgba(31, 41, 51, 0.06);
+  }
+
+  #{{ section_id }} .nbd-about__side-note span {
+    color: var(--nbd-green);
+    font-size: 0.74rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  #{{ section_id }} .nbd-about__side-note p {
+    margin: 14px 0 0;
+    color: var(--nbd-text);
+    font-size: clamp(1.2rem, 2.1vw, 2rem);
+    line-height: 1.25;
+  }
+
+  #{{ section_id }} .nbd-about__quote-band {
+    display: grid;
+    grid-template-columns: auto minmax(0, 920px);
+    gap: clamp(18px, 3vw, 34px);
+    align-items: start;
+    margin-top: clamp(54px, 7vw, 90px);
+    padding: clamp(30px, 5vw, 58px);
+    background: var(--nbd-charcoal);
+    color: #faf7f0;
+  }
+
+  #{{ section_id }} .nbd-about__quote-band span {
+    color: var(--nbd-gold);
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: clamp(4rem, 8vw, 8rem);
+    line-height: 0.85;
+  }
+
+  #{{ section_id }} .nbd-about__quote-band p {
+    margin: 0;
+    color: #faf7f0;
+    font-family: var(--nbd-heading-font);
+    font-size: clamp(1.45rem, 2.55vw, 2.8rem);
+    font-weight: 600;
+    line-height: 1.13;
+  }
+
+  #{{ section_id }} .nbd-about__products {
+    margin-top: clamp(58px, 7.5vw, 96px);
+  }
+
+  #{{ section_id }} .nbd-about__section-heading {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    align-items: center;
+    justify-items: center;
+    max-width: 720px;
+    margin: 0 auto clamp(28px, 4vw, 46px);
+    text-align: center;
+  }
+
+  #{{ section_id }} .nbd-about__cards {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: clamp(14px, 2vw, 22px);
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+  }
+
+  #{{ section_id }} .nbd-about__card {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    min-width: 0;
+    background: var(--nbd-surface);
+    border: 1px solid var(--nbd-border);
+    box-shadow: 0 18px 54px rgba(31, 41, 51, 0.04);
+  }
+
+  #{{ section_id }} .nbd-about__card-media {
+    aspect-ratio: 1 / 0.86;
+    overflow: hidden;
+    background: #ffffff;
+  }
+
+  #{{ section_id }} .nbd-about__card-image,
+  #{{ section_id }} .nbd-about__card-placeholder {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  #{{ section_id }} .nbd-about__card-placeholder svg {
+    width: 62%;
+    stroke-width: 4;
+  }
+
+  #{{ section_id }} .nbd-about__card-copy {
+    padding: clamp(20px, 2.6vw, 32px);
+    background: #ffffff;
+  }
+
+  #{{ section_id }} .nbd-about__card-copy p {
+    margin: 14px 0 0;
+    font-size: 0.98rem;
+    line-height: 1.65;
+  }
+
+  #{{ section_id }} .nbd-about__commitment {
+    display: grid;
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+    gap: clamp(28px, 5vw, 58px);
+    margin-top: clamp(58px, 8vw, 104px);
+    padding: clamp(30px, 5vw, 58px) 0 0;
+    border-top: 1px solid rgba(31, 77, 58, 0.22);
+  }
+
+  #{{ section_id }} .nbd-about__final-cta {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) auto;
+    gap: clamp(28px, 5vw, 64px);
+    align-items: center;
+    margin-top: clamp(56px, 7vw, 92px);
+    padding: clamp(36px, 5.5vw, 70px);
+    background:
+      linear-gradient(135deg, rgba(31, 77, 58, 0.96), rgba(31, 41, 51, 0.98)),
+      var(--nbd-green);
+    color: #faf7f0;
+    box-shadow: 0 30px 90px rgba(31, 41, 51, 0.1);
+  }
+
+  #{{ section_id }} .nbd-about__final-copy {
+    max-width: 780px;
+  }
+
+  #{{ section_id }} .nbd-about__final-cta .nbd-about__kicker {
+    color: var(--nbd-gold);
+  }
+
+  #{{ section_id }} .nbd-about__final-cta h2,
+  #{{ section_id }} .nbd-about__final-cta p {
+    color: #faf7f0;
+  }
+
+  #{{ section_id }} .nbd-about__final-cta h2 {
+    max-width: 680px;
+    font-size: clamp(2rem, 3.2vw, 3.45rem);
+  }
+
+  #{{ section_id }} .nbd-about__final-cta p:not(.nbd-about__kicker) {
+    max-width: 620px;
+    margin: 18px 0 0;
+    font-size: clamp(0.98rem, 1.1vw, 1.1rem);
+    line-height: 1.7;
+  }
+
+  #{{ section_id }} .nbd-about__final-actions {
+    justify-content: flex-end;
+    margin-top: 0;
+    min-width: min(100%, 360px);
+  }
+
+  #{{ section_id }} .nbd-reveal {
+    transform: translateY(26px);
+    opacity: 0.001;
+    transition:
+      opacity 760ms ease,
+      transform 760ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  #{{ section_id }} .nbd-reveal.is-visible {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  @media (max-width: 1180px) {
+    #{{ section_id }} .nbd-about__cards {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    #{{ section_id }} .nbd-about__title {
+      font-size: clamp(3rem, 6vw, 5rem);
+    }
+  }
+
+  @media (max-width: 989px) {
+    #{{ section_id }} .nbd-about__hero,
+    #{{ section_id }} .nbd-about__story-grid,
+    #{{ section_id }} .nbd-about__section-heading,
+    #{{ section_id }} .nbd-about__commitment,
+    #{{ section_id }} .nbd-about__final-cta,
+    #{{ section_id }} .nbd-about__quote-band {
+      grid-template-columns: 1fr;
+    }
+
+    #{{ section_id }} .nbd-about__hero {
+      min-height: auto;
+      gap: 34px;
+    }
+
+    #{{ section_id }} .nbd-about__hero-media {
+      min-height: auto;
+      max-width: 680px;
+    }
+
+    #{{ section_id }} .nbd-about__hero-copy,
+    #{{ section_id }} .nbd-about__intro,
+    #{{ section_id }} .nbd-about__facts {
+      max-width: none;
+    }
+
+    #{{ section_id }} .nbd-about__final-actions {
+      justify-content: flex-start;
+      min-width: 0;
+    }
+  }
+
+  @media (max-width: 640px) {
+    #{{ section_id }} .nbd-about__inner {
+      width: min(100% - 24px, var(--nbd-max-width));
+      padding: 12px 0 clamp(48px, 12vw, 72px);
+    }
+
+    #{{ section_id }} .nbd-about__title {
+      font-size: clamp(2.55rem, 14vw, 3.9rem);
+    }
+
+    #{{ section_id }} h2 {
+      font-size: clamp(1.85rem, 9vw, 2.55rem);
+    }
+
+    #{{ section_id }} .nbd-about__facts,
+    #{{ section_id }} .nbd-about__cards {
+      grid-template-columns: 1fr;
+    }
+
+    #{{ section_id }} .nbd-about__image,
+    #{{ section_id }} .nbd-about__placeholder {
+      height: min(90vw, 430px);
+    }
+
+    #{{ section_id }} .nbd-about__hero-media::before {
+      inset: 7% -3% -4% 7%;
+    }
+
+    #{{ section_id }} .nbd-about__button {
+      width: 100%;
+      justify-content: center;
+    }
+
+    #{{ section_id }} .nbd-about__actions,
+    #{{ section_id }} .nbd-about__final-actions {
+      width: 100%;
+    }
+
+    #{{ section_id }} .nbd-about__quote-band {
+      padding: 28px 22px;
+    }
+
+    #{{ section_id }} .nbd-about__quote-band p {
+      font-size: clamp(1.35rem, 7vw, 2rem);
+    }
+
+    #{{ section_id }} .nbd-about__final-cta {
+      padding: 30px 22px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #{{ section_id }} .nbd-reveal {
+      transform: none;
+      opacity: 1;
+      transition: none;
+    }
+
+    #{{ section_id }} .nbd-about__button {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  (() => {
+    const section = document.getElementById({{ section_id | json }});
+    if (!section) return;
+
+    const revealItems = section.querySelectorAll('.nbd-reveal');
+    if (!revealItems.length) return;
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) {
+      revealItems.forEach((item) => item.classList.add('is-visible'));
+      return;
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('is-visible');
+        observer.unobserve(entry.target);
+      });
+    }, {
+      threshold: 0.16,
+      rootMargin: '0px 0px -8% 0px'
+    });
+
+    revealItems.forEach((item, index) => {
+      item.style.transitionDelay = `${Math.min(index * 70, 280)}ms`;
+      observer.observe(item);
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "About Us",
+  "tag": "section",
+  "class": "section nbd-about-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Hero"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Since 1988"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Nasir Book Depot"
+    },
+    {
+      "type": "textarea",
+      "id": "intro",
+      "label": "Intro text",
+      "default": "Founded by Mr. Nasir Ahmed in 1988, Nasir Book Depot has served the Hazrat Nizamuddin community in New Delhi with Islamic books and religious items built on quality, reasonable prices, and reliable service."
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Hero image"
+    },
+    {
+      "type": "text",
+      "id": "hero_image_alt",
+      "label": "Hero image alt text",
+      "default": "Islamic books and religious items at Nasir Book Depot"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Primary button label",
+      "default": "Shop Books"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Primary button link"
+    },
+    {
+      "type": "text",
+      "id": "secondary_button_label",
+      "label": "Secondary button label",
+      "default": "Contact Us"
+    },
+    {
+      "type": "url",
+      "id": "secondary_button_link",
+      "label": "Secondary button link"
+    },
+    {
+      "type": "header",
+      "content": "Facts"
+    },
+    {
+      "type": "text",
+      "id": "fact_1_label",
+      "label": "Fact 1 label",
+      "default": "Founded"
+    },
+    {
+      "type": "text",
+      "id": "fact_1_value",
+      "label": "Fact 1 value",
+      "default": "1988"
+    },
+    {
+      "type": "text",
+      "id": "fact_2_label",
+      "label": "Fact 2 label",
+      "default": "Founder"
+    },
+    {
+      "type": "text",
+      "id": "fact_2_value",
+      "label": "Fact 2 value",
+      "default": "Mr. Nasir Ahmed"
+    },
+    {
+      "type": "text",
+      "id": "fact_3_label",
+      "label": "Fact 3 label",
+      "default": "Location"
+    },
+    {
+      "type": "text",
+      "id": "fact_3_value",
+      "label": "Fact 3 value",
+      "default": "Hazrat Nizamuddin, New Delhi"
+    },
+    {
+      "type": "header",
+      "content": "Story"
+    },
+    {
+      "type": "text",
+      "id": "story_eyebrow",
+      "label": "Story eyebrow",
+      "default": "Our Story"
+    },
+    {
+      "type": "text",
+      "id": "story_heading",
+      "label": "Story heading",
+      "default": "A Family Legacy Rooted In Service"
+    },
+    {
+      "type": "textarea",
+      "id": "story_text",
+      "label": "Story text",
+      "default": "Nasir Book Depot began in Hazrat Nizamuddin, New Delhi, with a clear purpose: to make Islamic books and religious items available with dependable service and fair value. The work started by Mr. Nasir Ahmed continues as a family legacy, shaped by the trust of the community and a commitment to quality."
+    },
+    {
+      "type": "text",
+      "id": "side_note_label",
+      "label": "Side note label",
+      "default": "Built On"
+    },
+    {
+      "type": "textarea",
+      "id": "side_note_text",
+      "label": "Side note text",
+      "default": "Quality, reasonable prices, reliable service, and community trust."
+    },
+    {
+      "type": "header",
+      "content": "Products"
+    },
+    {
+      "type": "text",
+      "id": "products_eyebrow",
+      "label": "Products eyebrow",
+      "default": "What We Offer"
+    },
+    {
+      "type": "text",
+      "id": "products_heading",
+      "label": "Products heading",
+      "default": "Islamic Books And Religious Items"
+    },
+    {
+      "type": "header",
+      "content": "Statement"
+    },
+    {
+      "type": "textarea",
+      "id": "quote_text",
+      "label": "Quote-style statement",
+      "default": "A family legacy shaped by Islamic books, religious items, reasonable prices, and reliable service."
+    },
+    {
+      "type": "header",
+      "content": "Commitment"
+    },
+    {
+      "type": "text",
+      "id": "commitment_eyebrow",
+      "label": "Commitment eyebrow",
+      "default": "Community And Care"
+    },
+    {
+      "type": "text",
+      "id": "commitment_heading",
+      "label": "Commitment heading",
+      "default": "Our Commitment"
+    },
+    {
+      "type": "textarea",
+      "id": "commitment_text",
+      "label": "Commitment text",
+      "default": "We remain focused on offering Islamic books, Tasbeeh, Quran Sharif boxes, Rehal, and other religious items with care, reasonable prices, and reliable service."
+    },
+    {
+      "type": "header",
+      "content": "Final CTA"
+    },
+    {
+      "type": "text",
+      "id": "final_cta_eyebrow",
+      "label": "Final CTA eyebrow",
+      "default": "Visit Nasir Book Depot"
+    },
+    {
+      "type": "text",
+      "id": "final_cta_heading",
+      "label": "Final CTA heading",
+      "default": "Explore Islamic Books And Religious Items"
+    },
+    {
+      "type": "textarea",
+      "id": "final_cta_text",
+      "label": "Final CTA text",
+      "default": "Browse Islamic books, Tasbeeh, Quran Sharif boxes, Rehal, and other religious items with quality, reasonable prices, and reliable service."
+    },
+    {
+      "type": "text",
+      "id": "final_primary_label",
+      "label": "Final primary button label",
+      "default": "Shop Now"
+    },
+    {
+      "type": "url",
+      "id": "final_primary_link",
+      "label": "Final primary button link"
+    },
+    {
+      "type": "text",
+      "id": "final_secondary_label",
+      "label": "Final secondary button label",
+      "default": "Contact Us"
+    },
+    {
+      "type": "url",
+      "id": "final_secondary_link",
+      "label": "Final secondary button link"
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "rgba(0,0,0,0)",
+      "info": "Uses theme background when set to transparent"
+    },
+    {
+      "type": "color",
+      "id": "surface_color",
+      "label": "Secondary background",
+      "default": "rgba(0,0,0,0)",
+      "info": "Uses theme secondary background when set to transparent"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Heading and body text",
+      "default": "rgba(0,0,0,0)",
+      "info": "Uses theme heading color when set to transparent"
+    },
+    {
+      "type": "color",
+      "id": "muted_text_color",
+      "label": "Muted text",
+      "default": "rgba(0,0,0,0)",
+      "info": "Uses theme text color when set to transparent"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Small accent text",
+      "default": "rgba(0,0,0,0)",
+      "info": "Uses theme secondary button background when set to transparent"
+    },
+    {
+      "type": "color",
+      "id": "green_color",
+      "label": "Primary green",
+      "default": "rgba(0,0,0,0)",
+      "info": "Uses theme primary button background when set to transparent"
+    },
+    {
+      "type": "color",
+      "id": "gold_color",
+      "label": "Gold accent",
+      "default": "rgba(0,0,0,0)",
+      "info": "Uses theme secondary button background when set to transparent"
+    },
+    {
+      "type": "color",
+      "id": "charcoal_color",
+      "label": "Charcoal",
+      "default": "rgba(0,0,0,0)",
+      "info": "Uses theme heading color when set to transparent"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border",
+      "default": "rgba(0,0,0,0)",
+      "info": "Uses theme border color when set to transparent"
+    },
+    {
+      "type": "select",
+      "id": "heading_font_stack",
+      "label": "Heading font style",
+      "default": "Inter, Arial, Helvetica, sans-serif",
+      "options": [
+        {
+          "value": "Inter, Arial, Helvetica, sans-serif",
+          "label": "Theme-like clean sans"
+        },
+        {
+          "value": "Georgia, 'Times New Roman', serif",
+          "label": "Editorial serif"
+        },
+        {
+          "value": "'Times New Roman', Times, serif",
+          "label": "Classic serif"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "body_font_stack",
+      "label": "Body font style",
+      "default": "Inter, Arial, Helvetica, sans-serif",
+      "options": [
+        {
+          "value": "Inter, Arial, Helvetica, sans-serif",
+          "label": "Theme-like clean sans"
+        },
+        {
+          "value": "Arial, Helvetica, sans-serif",
+          "label": "Clean sans"
+        },
+        {
+          "value": "Georgia, 'Times New Roman', serif",
+          "label": "Editorial serif"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "min": 1000,
+      "max": 1600,
+      "step": 20,
+      "unit": "px",
+      "label": "Content width",
+      "default": 1360
+    },
+    {
+      "type": "range",
+      "id": "section_spacing",
+      "min": 64,
+      "max": 180,
+      "step": 4,
+      "unit": "px",
+      "label": "Top and bottom spacing",
+      "default": 104
+    },
+    {
+      "type": "range",
+      "id": "image_radius",
+      "min": 0,
+      "max": 28,
+      "step": 1,
+      "unit": "px",
+      "label": "Image corner radius",
+      "default": 0
+    }
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Product category",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "image_alt",
+          "label": "Image alt text"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Islamic Books"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Text",
+          "default": "Islamic books offered with attention to quality and service."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "About Us",
+      "blocks": [
+        {
+          "type": "category",
+          "settings": {
+            "title": "Islamic Books",
+            "text": "Islamic books offered with attention to quality and service."
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "title": "Tasbeeh",
+            "text": "Tasbeeh and religious items available at reasonable prices."
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "title": "Quran Sharif Boxes",
+            "text": "Quran Sharif boxes selected with care and respect."
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "title": "Rehal",
+            "text": "Rehal and related religious items for everyday use."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

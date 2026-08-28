@@ -1,0 +1,297 @@
+<section>
+  <div class="container container--medium nbd-cart-container">
+    {%- if cart.item_count > 0 -%}
+      <div class="page-header">
+        <div class="page-header__text-wrapper text-container">
+          <h1 class="nbd-heading-h1">{{ 'cart.general.title' | t }}</h1>
+
+          {%- if settings.cart_show_free_shipping_threshold and settings.cart_free_shipping_threshold != '' -%}
+            {%- assign free_shipping_thresholds = settings.cart_free_shipping_threshold | remove: ' ' | split: ',' -%}
+            {%- assign has_found_matching_threshold = false -%}
+
+            {%- if free_shipping_thresholds.size > 1 -%}
+              {%- for threshold in free_shipping_thresholds -%}
+                {%- assign threshold_parts = threshold | split: ':' -%}
+                {%- assign currency_code = threshold_parts | first | upcase -%}
+
+                {%- if currency_code == cart.currency.iso_code -%}
+                  {%- assign free_shipping_calculated_threshold = threshold_parts | last -%}
+                  {%- assign has_found_matching_threshold = true -%}
+                  {%- break -%}
+                {%- endif -%}
+              {%- endfor -%}
+            {%- else -%}
+              {%- assign free_shipping_calculated_threshold = free_shipping_thresholds | last -%}
+              {%- assign has_found_matching_threshold = true -%}
+            {%- endif -%}
+
+            {%- if has_found_matching_threshold -%}
+              {%- assign threshold_in_cents = free_shipping_calculated_threshold | times: 100 -%}
+
+              {%- assign calculated_total_price = cart.total_price -%}
+
+              {%- for line_item in cart.items -%}
+                {%- unless line_item.requires_shipping -%}
+                  {%- assign calculated_total_price = calculated_total_price | minus: line_item.final_line_price -%}
+                {%- endunless -%}
+              {%- endfor -%}
+
+              <free-shipping-bar threshold="{{ threshold_in_cents }}" class="shipping-bar shipping-bar--large" style="--progress: {{ cart.total_price | times: 1.0 | divided_by: threshold_in_cents | at_most: 1 }}">
+                {%- if calculated_total_price >= threshold_in_cents -%}
+                  <span class="shipping-bar__text">{{ 'cart.general.free_shipping' | t }}</span>
+                {%- else -%}
+                  {%- capture remaining_amount -%}{{ calculated_total_price | minus: threshold_in_cents | abs | money }}{%- endcapture -%}
+                  <span class="shipping-bar__text">{{ 'cart.general.free_shipping_remaining_html' | t: remaining_amount: remaining_amount }}</span>
+                {%- endif -%}
+
+                <span class="shipping-bar__progress"></span>
+              </free-shipping-bar>
+            {%- endif -%}
+          {%- endif -%}
+        </div>
+      </div>
+    {%- else -%}
+      <div class="empty-state text-container">
+        <h1 class="nbd-heading-h1">{{ 'cart.general.title' | t }}</h1>
+        <p class="text--large">{{ 'cart.general.empty' | t }}</p>
+
+        <div class="button-wrapper">
+          <a href="{{ section.settings.empty_button_link }}" class="nbd-button--primary">{{ 'cart.general.start_shopping' | t }}</a>
+        </div>
+      </div>
+    {%- endif -%}
+
+    {%- if cart.item_count > 0 -%}
+      <div class="page-content page-content--fluid">
+        <div class="cart nbd-cart">
+          <div class="cart__content">
+            <div class="nbd-cart-items">
+              {%- for line_item in cart.items -%}
+                <div class="nbd-cart-item-card">
+                  <div class="nbd-cart-item__image">
+                    <a href="{{ line_item.url }}" tabindex="-1" aria-hidden="true">
+                      <img class="nbd-cart-item__img" loading="lazy" sizes="(max-width: 740px) 80px, 92px" {% render 'image-attributes', image: line_item.image, sizes: '80,92,160,184,240,276' %}>
+                    </a>
+                  </div>
+
+                  <div class="nbd-cart-item__details">
+                    <a href="{{ line_item.url }}" class="nbd-cart-item__title">{{ line_item.product.title }}</a>
+                    
+                    {%- if line_item.product.has_only_default_variant == false or line_item.properties.size > 0 -%}
+                      <div class="nbd-cart-item__options">
+                        {%- for option in line_item.options_with_values -%}
+                          <span class="nbd-cart-item__option">{{ option.name }}: {{ option.value }}</span>
+                        {%- endfor -%}
+                        
+                        {%- for property in line_item.properties -%}
+                          {%- assign property_first_char = property.first | first -%}
+                          {%- if property.last != blank and property_first_char != '_' -%}
+                            <span class="nbd-cart-item__option">{{ property.first }}: {{ property.last }}</span>
+                          {%- endif -%}
+                        {%- endfor -%}
+                      </div>
+                    {%- endif -%}
+
+                    {%- if line_item.selling_plan_allocation -%}
+                      <div class="nbd-cart-item__selling-plan">{{ line_item.selling_plan_allocation.selling_plan.name }}</div>
+                    {%- endif -%}
+
+                    {%- if line_item.discounts.size > 0 -%}
+                      <div class="nbd-cart-item__discounts">
+                        {%- for discount in line_item.discounts -%}
+                          <span class="nbd-cart-item__discount">{{ discount.title }}</span>
+                        {%- endfor -%}
+                      </div>
+                    {%- endif -%}
+
+                    <div class="nbd-cart-item__price">{{ line_item.final_price | money }}</div>
+                  </div>
+
+                  <div class="nbd-cart-item__actions">
+                    {%- assign max_allowed_quantity = '' -%}
+                    {%- assign allow_more = true -%}
+
+                    {%- if line_item.variant.inventory_management == 'shopify' and line_item.variant.inventory_policy == 'deny' and line_item.variant.inventory_quantity <= line_item.quantity -%}
+                      {%- assign max_allowed_quantity = line_item.variant.inventory_quantity -%}
+                      {%- assign allow_more = false -%}
+                    {%- endif -%}
+
+                    <div class="nbd-quantity-selector">
+                      <input type="number" name="updates[]" class="nbd-quantity-input" value="{{ line_item.quantity }}" min="0" {% if max_allowed_quantity != '' %}max="{{ max_allowed_quantity }}"{% endif %} aria-label="{{ 'cart.general.quantity' | t | escape }}">
+                    </div>
+                    
+                    <a href="{{ line_item.url_to_remove }}" class="nbd-cart-item__remove" data-no-instant>{{ 'cart.general.remove' | t }}</a>
+                    
+                    <div class="nbd-cart-item__total">{{ line_item.final_line_price | money }}</div>
+                  </div>
+                </div>
+              {%- endfor -%}
+            </div>
+
+            {%- assign items_requiring_shipping = cart.items | where: 'requires_shipping' -%}
+
+            {%- if section.settings.show_shipping_estimator and items_requiring_shipping.size > 0 -%}
+              <div class="shipping-estimator">
+                <button type="button" is="toggle-button" class="shipping-estimator__toggle-button collapsible-toggle heading heading--small" aria-controls="shipping-estimator" aria-expanded="false">
+                  {{- 'cart.shipping_estimator.estimate_shipping' | t -}}
+                  {%- render 'icon' with 'chevron' -%}
+                </button>
+
+                <collapsible-content id="shipping-estimator" class="collapsible">
+                  <shipping-estimator class="shipping-estimator__form" role="form">
+                    <div class="input-row">
+                      <div class="input">
+                        <label class="input__block-label" for="shipping-estimator[country]">{{ 'cart.shipping_estimator.country' | t }}</label>
+                        <div class="select-wrapper">
+                          <select class="select" is="country-selector" name="shipping-estimator[country]" id="shipping-estimator[country]" aria-owns="shipping-estimator-province-wrapper" {% if customer and customer.default_address %}data-default="{{ customer.default_address.country }}"{% else %}data-default="{{ section.settings.shipping_estimator_default_country }}"{% endif %}>{{ country_option_tags }}</select>
+                          {%- render 'icon' with 'chevron' -%}
+                        </div>
+                      </div>
+
+                      <div id="shipping-estimator-province-wrapper" class="input" hidden>
+                        <label class="input__block-label" for="shipping-estimator[province]">{{ 'cart.shipping_estimator.province' | t }}</label>
+                        <div class="select-wrapper">
+                          <select class="select" name="shipping-estimator[province]" id="shipping-estimator[province]" {% if customer and customer.default_address %}data-default="{{ customer.default_address.province }}"{% endif %}></select>
+                          {%- render 'icon' with 'chevron' -%}
+                        </div>
+                      </div>
+
+                      <div class="input">
+                        <label class="input__block-label" for="shipping-estimator[zip]">{{ 'cart.shipping_estimator.zip_code' | t }}</label>
+                        <input type="text" class="input__field" name="shipping-estimator[zip]" id="shipping-estimator[zip]">
+                      </div>
+                    </div>
+
+                    <button type="button" is="loader-button" class="form__submit form__submit--closer button button--primary">{{ 'cart.shipping_estimator.submit' | t }}</button>
+                  </shipping-estimator>
+                </collapsible-content>
+              </div>
+            {%- endif -%}
+          </div>
+
+          <div class="cart__aside">
+            <safe-sticky offset="24" class="cart__aside-inner">
+              <form action="{{ routes.cart_url }}" method="post" novalidate class="cart__recap nbd-cart-summary">
+                <input type="hidden" name="checkout">
+
+                {%- for block in section.blocks -%}
+                  {%- case block.type -%}
+                    {%- when 'order_note' -%}
+                      <div class="nbd-cart-note" {{ block.shopify_attributes }}>
+                        <label for="cart-note" class="nbd-cart-note__label">{{ 'cart.general.order_note' | t }}</label>
+                        <textarea id="cart-note" name="note" class="nbd-cart-note__textarea" rows="3" placeholder="{{ 'cart.general.order_note_placeholder' | t }}">{{ cart.note }}</textarea>
+                      </div>
+
+                    {%- when 'express_checkout_buttons' -%}
+                      {%- if additional_checkout_buttons -%}
+                        <div class="nbd-cart-express-checkout" {{ block.shopify_attributes }}>
+                          <div class="additional-checkout-buttons additional-checkout-buttons--vertical">
+                            {{- content_for_additional_checkout_buttons -}}
+                          </div>
+                        </div>
+                      {%- endif -%}
+
+                    {%- when '@app' -%}
+                      <div class="nbd-cart-app-block">
+                        {%- render block -%}
+                      </div>
+                  {%- endcase -%}
+                {%- endfor -%}
+
+                {%- if cart.cart_level_discount_applications.size > 0 -%}
+                  <div class="nbd-cart-discounts">
+                    {%- for discount in cart.cart_level_discount_applications -%}
+                      <div class="nbd-cart-discount">
+                        <span class="nbd-cart-discount__icon">{%- render 'icon' with 'discount' -%}</span>
+                        <span class="nbd-cart-discount__title">{{ discount.title }}</span>
+                        <span class="nbd-cart-discount__amount">-{{ discount.total_allocated_amount | money }}</span>
+                      </div>
+                    {%- endfor -%}
+                  </div>
+                {%- endif -%}
+
+                <div class="nbd-cart-subtotal">
+                  <span class="nbd-cart-subtotal__label">{{ 'cart.general.subtotal' | t }}</span>
+                  <span class="nbd-cart-subtotal__amount">{{ cart.total_price | money }}</span>
+                </div>
+
+                {%- capture shipping_tax_note -%}{{ 'cart.general.shipping_tax_note' | t }}{%- endcapture -%}
+
+                {%- if shipping_tax_note != '' -%}
+                  <div class="nbd-cart-shipping-note">{{ shipping_tax_note }}</div>
+                {%- endif -%}
+
+                {%- if shop.taxes_included or shop.shipping_tax_liability != 'not_required' -%}
+                  <div class="nbd-cart-taxes">
+                    {%- if shop.taxes_included -%}
+                      <span class="nbd-cart-tax">{{ 'cart.general.taxes_included' | t }}</span>
+                    {%- endif -%}
+                    {%- if shop.shipping_tax_liability != 'not_required' -%}
+                      <span class="nbd-cart-tax">{{ 'cart.general.tax_calculated_at_checkout' | t }}</span>
+                    {%- endif -%}
+                  </div>
+                {%- endif -%}
+
+                <div class="nbd-cart-checkout">
+                  <button type="submit" class="nbd-button--primary nbd-button--full" name="checkout">
+                    <span class="checkout-button__lock">{%- render 'icon' with 'lock' -%}</span>
+                    {{- 'cart.general.checkout' | t -}}
+                  </button>
+                  
+                  {%- if section.settings.show_payment_methods and shop.enabled_payment_types.size > 0 -%}
+                    <div class="nbd-cart-payment-methods">
+                      {%- for type in shop.enabled_payment_types -%}
+                        {{ type | payment_type_svg_tag: class: 'nbd-payment-icon' }}
+                      {%- endfor -%}
+                    </div>
+                  {%- endif -%}
+                </div>
+              </form>
+            </safe-sticky>
+          </div>
+        </div>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Cart",
+  "blocks": [
+    {
+      "type": "order_note",
+      "name": "Order note",
+      "limit": 1
+    },
+    {
+      "type": "express_checkout_buttons",
+      "name": "Express checkout buttons",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Make payment faster with accelerated payment buttons. [Learn more](https://shopify.dev/themes/pricing-payments/accelerated-checkout)"
+        }
+      ]
+    },
+    {
+      "type": "@app"
+    }
+  ],
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_payment_methods",
+      "label": "Show payment methods",
+      "default": true
+    },
+    {
+      "type": "url",
+      "id": "empty_button_link",
+      "label": "Empty button link",
+      "default": "/collections/all"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,177 @@
+<section>
+  <div class="link-bar hidden-phone">
+    <div class="container">
+      <div class="link-bar__wrapper">
+        <ul class="link-bar__linklist list--unstyled" role="list">
+          <li class="link-bar__link-item">
+            <a href="{{ routes.account_url }}" class="link-bar__link link--animated text--underlined">{{ 'customer.orders.title' | t }}</a>
+          </li>
+
+          <li class="link-bar__link-item">
+            <a href="{{ routes.account_addresses_url }}" class="link-bar__link link--animated">{{ 'customer.addresses.title' | t }}</a>
+          </li>
+
+          <li class="link-bar__link-item">
+            <a href="{{ routes.account_logout_url }}" class="link-bar__link link--animated text--subdued" data-no-instant>{{ 'customer.logout.title' | t }}</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="mobile-toolbar hidden-tablet-and-up">
+    <button class="mobile-toolbar__item" is="toggle-button" aria-expanded="false" aria-controls="account-links-popover">{{- 'customer.orders.title' | t -}} {%- render 'icon' with 'chevron' -%}</button>
+  </div>
+
+  <popover-content id="account-links-popover" class="popover">
+    <span class="popover__overlay"></span>
+
+    <header class="popover__header">
+      <span class="popover__title heading h6">{{- 'customer.general.title' | t -}}</span>
+
+      <button type="button" class="popover__close-button tap-area tap-area--large" data-action="close" title="{{ 'general.accessibility.close' | t | escape }}">
+        {%- render 'icon' with 'close' -%}
+      </button>
+    </header>
+
+    <div class="popover__content">
+      <div class="popover__choice-list">
+        <a href="{{ routes.account_url }}" class="popover__choice-item">
+          <span class="popover__choice-label" aria-current="true">{{ 'customer.orders.title' | t }}</span>
+        </a>
+
+        <a href="{{ routes.account_addresses_url }}" class="popover__choice-item">
+          <span class="popover__choice-label">{{ 'customer.addresses.title' | t }}</span>
+        </a>
+
+        <a href="{{ routes.account_logout_url }}" class="popover__choice-item text--subdued" data-no-instant>
+          <span class="popover__choice-label">{{ 'customer.logout.title' | t }}</span>
+        </a>
+      </div>
+    </div>
+  </popover-content>
+
+  <div class="account account--order-list">
+    <div class="container container--small nbd-account-container">
+      {%- if customer.orders.size == 0 -%}
+        <div class="page-header page-header--small {% if section.blocks.size == 1 %}page-header--alone{% endif %}">
+          <div class="page-header__text-wrapper text-container">
+            <h1 class="nbd-heading-h1">{{ 'customer.orders.title' | t }} <span class="bubble-count bubble-count--top">{{ customer.orders.size }}</span></h1>
+            <p class="nbd-account-empty-text">{{ 'customer.orders.no_orders' | t }}</p>
+
+            <div class="button-wrapper">
+              <a href="{{ routes.all_products_collection_url }}" class="nbd-button--primary">{{ 'customer.orders.start_shopping' | t }}</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="page-content page-content--fluid">
+          <div class="account__block-list">
+            {%- for block in section.blocks -%}
+              <div class="account__block-item" {{ block.shopify_attributes }}>
+                {%- case block.type -%}
+                  {%- when '@app' -%}
+                    {%- render block -%}
+
+                  {%- when 'liquid' -%}
+                    {{- block.settings.liquid -}}
+                {%- endcase -%}
+              </div>
+            {%- endfor -%}
+          </div>
+        </div>
+      {%- else -%}
+        <div class="page-header page-header--small">
+          <div class="page-header__text-wrapper text-container">
+            <h1 class="nbd-heading-h1">{{ 'customer.orders.title' | t }} <span class="bubble-count bubble-count--top">{{ customer.orders.size }}</span></h1>
+          </div>
+        </div>
+
+        <div class="page-content page-content--fluid">
+          <div class="account__block-list">
+            {%- for block in section.blocks -%}
+              <div class="account__block-item" {{ block.shopify_attributes }}>
+                {%- case block.type -%}
+                  {%- when '@app' -%}
+                    {%- render block -%}
+
+                  {%- when 'liquid' -%}
+                    {{- block.settings.liquid -}}
+
+                  {%- when 'orders' -%}
+                    {%- paginate customer.orders by 50 -%}
+                      <div class="nbd-orders-list">
+                        {%- for order in customer.orders -%}
+                          <div class="nbd-order-card">
+                            <div class="nbd-order-card__header">
+                              <div class="nbd-order-card__number">
+                                <span class="nbd-order-card__label">{{ 'customer.orders.order_number' | t }}</span>
+                                <a href="{{ order.customer_url }}" class="nbd-order-card__value">{{ order.name }}</a>
+                              </div>
+                              <div class="nbd-order-card__date">
+                                <span class="nbd-order-card__label">{{ 'customer.orders.date' | t }}</span>
+                                <span class="nbd-order-card__value">{{ order.created_at | date: format: 'date_at' }}</span>
+                              </div>
+                            </div>
+
+                            <div class="nbd-order-card__body">
+                              <div class="nbd-order-card__status">
+                                <div class="nbd-order-card__status-item">
+                                  <span class="nbd-order-card__label">{{ 'customer.orders.payment_status' | t }}</span>
+                                  <span class="nbd-order-card__value nbd-order-card__status--{{ order.financial_status_label }}">{{ order.financial_status_label }}</span>
+                                </div>
+                                <div class="nbd-order-card__status-item">
+                                  <span class="nbd-order-card__label">{{ 'customer.orders.fulfillment_status' | t }}</span>
+                                  <span class="nbd-order-card__value nbd-order-card__status--{{ order.fulfillment_status_label }}">{{ order.fulfillment_status_label }}</span>
+                                </div>
+                              </div>
+
+                              <div class="nbd-order-card__total">
+                                <span class="nbd-order-card__label">{{ 'customer.orders.total' | t }}</span>
+                                <span class="nbd-order-card__value">{{ order.total_net_amount | money }}</span>
+                              </div>
+                            </div>
+                          </div>
+                        {%- endfor -%}
+                      </div>
+
+                      {%- render 'pagination', paginate: paginate -%}
+                    {%- endpaginate -%}
+                {%- endcase -%}
+              </div>
+            {%- endfor -%}
+          </div>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Customer account",
+  "class": "shopify-section--main-customers-account",
+  "blocks": [
+    {
+      "type": "@app"
+    },
+    {
+      "type": "liquid",
+      "name": "Liquid",
+      "settings": [
+        {
+          "type": "liquid",
+          "id": "liquid",
+          "label": "Liquid",
+          "info": "Add app snippets or other Liquid code to create advanced customizations."
+        }
+      ]
+    },
+    {
+      "type": "orders",
+      "name": "Order list",
+      "limit": 1
+    }
+  ]
+}
+{% endschema %}

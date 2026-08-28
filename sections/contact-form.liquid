@@ -1,0 +1,633 @@
+{%- liquid
+  if section.settings.background != settings.background and section.settings.background != 'rgba(0,0,0,0)'
+    assign blends_with_background = false
+  else
+    assign blends_with_background = true
+  endif
+
+  if section.settings.background == 'rgba(0,0,0,0)'
+    assign section_background = settings.background
+  else
+    assign section_background = section.settings.background
+  endif
+
+  if section.settings.text_color == 'rgba(0,0,0,0)'
+    assign heading_color = settings.heading_color
+    assign text_color = settings.text_color
+  else
+    assign heading_color = section.settings.text_color
+    assign text_color = section.settings.text_color
+  endif
+
+  if section.settings.button_background == 'rgba(0,0,0,0)'
+    assign button_background = settings.primary_button_background
+  else
+    assign button_background = section.settings.button_background
+  endif
+
+  if section.settings.button_text_color == 'rgba(0,0,0,0)'
+    assign button_text_color = settings.primary_button_text_color
+  else
+    assign button_text_color = section.settings.button_text_color
+  endif
+
+  assign directions_query = section.settings.directions_address | default: '1, Aziza Building, Hazrat Nizamuddin New Delhi - 110013'
+  assign encoded_directions_query = directions_query | url_encode
+  assign directions_url = 'https://www.google.com/maps/search/?api=1&query=' | append: encoded_directions_query
+  assign geo_url = 'geo:0,0?q=' | append: encoded_directions_query
+-%}
+
+<style>
+  #shopify-section-{{ section.id }} {
+    --heading-color: {{ heading_color.red }}, {{ heading_color.green }}, {{ heading_color.blue }};
+    --text-color: {{ text_color.red }}, {{ text_color.green }}, {{ text_color.blue }};
+    --primary-button-background: {{ button_background.red }}, {{ button_background.green }}, {{ button_background.blue }};
+    --primary-button-text-color: {{ button_text_color.red }}, {{ button_text_color.green }}, {{ button_text_color.blue }};
+    --section-background: {{ section_background.red }}, {{ section_background.green }}, {{ section_background.blue }};
+  }
+
+  #shopify-section-{{ section.id }} .nbd-contact-page {
+    background: rgb(var(--section-background));
+    color: rgb(var(--text-color));
+  }
+
+  #shopify-section-{{ section.id }} .nbd-contact__container {
+    max-width: var(--nbd-container-max-width);
+    margin: 0 auto;
+    padding: var(--vertical-breather) var(--nbd-container-gutter-mobile);
+  }
+
+  @media screen and (min-width: 741px) {
+    #shopify-section-{{ section.id }} .nbd-contact__container {
+      padding: var(--vertical-breather) var(--nbd-container-gutter-tablet);
+    }
+  }
+
+  @media screen and (min-width: 1200px) {
+    #shopify-section-{{ section.id }} .nbd-contact__container {
+      padding: var(--vertical-breather) var(--nbd-container-gutter-desktop);
+    }
+  }
+
+  #shopify-section-{{ section.id }} .nbd-contact__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--nbd-space-8);
+  }
+
+  @media screen and (min-width: 741px) {
+    #shopify-section-{{ section.id }} .nbd-contact__grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  #shopify-section-{{ section.id }} .nbd-contact__title {
+    font-size: var(--nbd-h1-mobile);
+    line-height: 1.1;
+    font-weight: 700;
+    color: rgb(var(--heading-color));
+    margin-bottom: var(--nbd-space-3);
+  }
+
+  @media screen and (min-width: 741px) {
+    #shopify-section-{{ section.id }} .nbd-contact__title {
+      font-size: var(--nbd-h1-tablet);
+    }
+  }
+
+  @media screen and (min-width: 1200px) {
+    #shopify-section-{{ section.id }} .nbd-contact__title {
+      font-size: var(--nbd-h1-desktop);
+    }
+  }
+
+  #shopify-section-{{ section.id }} .nbd-contact__eyebrow {
+    font-size: 12px;
+    font-weight: 600;
+    color: rgb(var(--nbd-gold-accent));
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: var(--nbd-space-2);
+  }
+
+  #shopify-section-{{ section.id }} .nbd-contact__intro {
+    font-size: 16px;
+    line-height: 1.6;
+    color: rgb(var(--text-color));
+    margin-bottom: var(--nbd-space-5);
+  }
+
+  #shopify-section-{{ section.id }} .nbd-contact-info-card {
+    background: rgb(var(--secondary-background));
+    border: 1px solid rgb(var(--border-color));
+    border-radius: var(--block-border-radius);
+    padding: var(--nbd-space-5);
+    display: flex;
+    flex-direction: column;
+    gap: var(--nbd-space-4);
+    margin-bottom: var(--nbd-space-4);
+  }
+
+  #shopify-section-{{ section.id }} .nbd-contact-info-item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--nbd-space-1);
+  }
+
+  #shopify-section-{{ section.id }} .nbd-contact-info-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: rgb(var(--nbd-muted-gray));
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  #shopify-section-{{ section.id }} .nbd-contact-info-value {
+    font-size: 16px;
+    color: rgb(var(--text-color));
+    text-decoration: none;
+  }
+
+  #shopify-section-{{ section.id }} .nbd-contact-info-value[href]:hover {
+    color: rgb(var(--nbd-primary-green));
+    text-decoration: underline;
+  }
+
+  #shopify-section-{{ section.id }} .nbd-contact-info-value address {
+    font-style: normal;
+  }
+
+  #shopify-section-{{ section.id }} .nbd-contact__actions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--nbd-space-3);
+  }
+
+  @media screen and (min-width: 741px) {
+    #shopify-section-{{ section.id }} .nbd-contact__actions {
+      flex-direction: row;
+    }
+  }
+
+  #shopify-section-{{ section.id }} .nbd-contact-form-card {
+    background: rgb(var(--secondary-background));
+    border: 1px solid rgb(var(--border-color));
+    border-radius: var(--block-border-radius);
+    padding: var(--nbd-space-6);
+  }
+
+  #shopify-section-{{ section.id }} .nbd-contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--nbd-space-4);
+  }
+
+  #shopify-section-{{ section.id }} .nbd-form-field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--nbd-space-2);
+  }
+
+  #shopify-section-{{ section.id }} .nbd-form-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: rgb(var(--nbd-dark-gray));
+  }
+
+  #shopify-section-{{ section.id }} .nbd-form-input,
+  #shopify-section-{{ section.id }} .nbd-form-textarea {
+    width: 100%;
+    padding: var(--nbd-space-3);
+    border: 1px solid rgb(var(--nbd-border-color));
+    border-radius: var(--button-border-radius);
+    font-size: 16px;
+    font-family: inherit;
+    background: rgb(var(--nbd-white));
+    color: rgb(var(--nbd-dark-gray));
+  }
+
+  #shopify-section-{{ section.id }} .nbd-form-input:focus,
+  #shopify-section-{{ section.id }} .nbd-form-textarea:focus {
+    outline: 2px solid rgb(var(--nbd-primary-green));
+    outline-offset: 2px;
+  }
+
+  #shopify-section-{{ section.id }} .nbd-form-textarea {
+    min-height: 120px;
+    resize: vertical;
+  }
+
+  #shopify-section-{{ section.id }} .nbd-form-success {
+    background: rgba(var(--nbd-success-color), 0.1);
+    color: rgb(var(--nbd-success-color));
+    padding: var(--nbd-space-3);
+    border-radius: var(--button-border-radius);
+    font-size: 14px;
+    text-align: center;
+  }
+
+  #shopify-section-{{ section.id }} .nbd-form-error {
+    background: rgba(var(--nbd-error-color), 0.1);
+    color: rgb(var(--nbd-error-color));
+    padding: var(--nbd-space-3);
+    border-radius: var(--button-border-radius);
+    font-size: 14px;
+    text-align: center;
+  }
+
+  #shopify-section-{{ section.id }} .contact__image {
+    width: 100%;
+    height: auto;
+    border-radius: var(--block-border-radius);
+  }
+</style>
+
+<section class="section nbd-contact-page">
+  <div class="nbd-contact__container">
+    <div class="nbd-contact__grid">
+      <div class="nbd-contact__info">
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="nbd-contact__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+        {%- endif -%}
+        
+        <h1 class="nbd-contact__title">{{ section.settings.title | default: 'Contact Nasir Book Depot' }}</h1>
+        
+        {%- if section.settings.content != blank -%}
+          <div class="nbd-contact__intro">
+            {{ section.settings.content }}
+          </div>
+        {%- endif -%}
+
+        <div class="nbd-contact-info-card">
+          {%- if section.settings.store_name != blank -%}
+            <div class="nbd-contact-info-item">
+              <span class="nbd-contact-info-label">{{ section.settings.store_label | default: 'Store' }}</span>
+              <span class="nbd-contact-info-value"><strong>{{ section.settings.store_name }}</strong></span>
+            </div>
+          {%- endif -%}
+
+          {%- if section.settings.address != blank -%}
+            <div class="nbd-contact-info-item">
+              <span class="nbd-contact-info-label">Address</span>
+              <address class="nbd-contact-info-value">{{ section.settings.address }}</address>
+            </div>
+          {%- endif -%}
+
+          {%- if section.settings.phone_label != blank -%}
+            <div class="nbd-contact-info-item">
+              <span class="nbd-contact-info-label">{{ section.settings.phone_label }}</span>
+              <a href="tel:+919910932893" class="nbd-contact-info-value">+91 99109 32893</a>
+              <a href="tel:+919811264032" class="nbd-contact-info-value">+91 98112 64032</a>
+              <a href="tel:+919354871997" class="nbd-contact-info-value">+91 93548 71997</a>
+            </div>
+          {%- endif -%}
+        </div>
+
+        <div class="nbd-contact__actions">
+          <a href="tel:+919910932893" class="nbd-button--primary">{{ section.settings.call_label | default: 'Call Now' }}</a>
+          
+          {%- if section.settings.directions_address != blank -%}
+            <a href="{{ directions_url }}" target="_blank" rel="noopener" class="nbd-button--secondary">{{ section.settings.directions_label | default: 'Get Directions' }}</a>
+          {%- endif -%}
+        </div>
+
+        {%- if section.settings.image != blank -%}
+          <div class="nbd-contact__media">
+            <img class="contact__image" loading="lazy" sizes="(max-width: 740px) calc(100vw - 24px * 2), 530px" {% render 'image-attributes', image: section.settings.image %}>
+          </div>
+        {%- endif -%}
+      </div>
+
+      <div class="nbd-contact__form-wrapper">
+        <div class="nbd-contact-form-card">
+          {%- if section.settings.form_eyebrow != blank -%}
+            <p class="nbd-contact__eyebrow">{{ section.settings.form_eyebrow | escape }}</p>
+          {%- endif -%}
+          
+          <h2 class="nbd-heading-h3">{{ section.settings.form_title | default: 'How can we help?' }}</h2>
+          
+          {%- if section.settings.form_text != blank -%}
+            <div class="nbd-contact__intro">{{ section.settings.form_text }}</div>
+          {%- endif -%}
+          
+          {%- form 'contact', class: 'nbd-contact-form' -%}
+            {%- if form.posted_successfully? -%}
+              <div class="nbd-form-success">
+                {{ 'contact.form.successfully_sent' | t }}
+              </div>
+            {%- endif -%}
+
+            {%- if form.errors -%}
+              <div class="nbd-form-error">
+                {{ form.errors | default_errors }}
+              </div>
+            {%- endif -%}
+
+            <div class="nbd-form-field">
+              <label for="contact-name" class="nbd-form-label">{{ 'contact.form.name' | t }}</label>
+              <input type="text" id="contact-name" name="contact[name]" class="nbd-form-input" required {% if customer %}value="{{ customer.name }}"{% endif %}>
+            </div>
+
+            <div class="nbd-form-field">
+              <label for="contact-email" class="nbd-form-label">{{ 'contact.form.email' | t }}</label>
+              <input type="email" id="contact-email" name="contact[email]" class="nbd-form-input" required {% if customer %}value="{{ customer.email }}"{% endif %}>
+            </div>
+
+            {%- for block in section.blocks -%}
+              {%- assign field_title = block.settings.title -%}
+
+              {%- if field_title == blank -%}
+                {%- capture field_title -%}Custom field {% increment custom_field %}{%- endcapture -%}
+              {%- endif -%}
+
+              {%- if block.type == 'text' -%}
+                <div class="nbd-form-field" {{ block.shopify_attributes }}>
+                  {%- if block.settings.use_long_text -%}
+                    <textarea id="contact-form-{{ field_title | handle }}" name="contact[{{ field_title | escape }}]" rows="4" class="nbd-form-textarea" aria-label="{{ block.settings.title | escape }}" {% if block.settings.is_required %}required{% endif %}></textarea>
+                    <label for="contact-form-{{ field_title | handle }}" class="nbd-form-label">{{ block.settings.title | escape }}</label>
+                  {%- else -%}
+                    <input id="contact-form-{{ field_title | handle }}" type="text" class="nbd-form-input" name="contact[{{ field_title | escape }}]" aria-label="{{ block.settings.title | escape }}" {% if block.settings.is_required %}required{% endif %}>
+                    <label for="contact-form-{{ field_title | handle }}" class="nbd-form-label">{{ block.settings.title | escape }}</label>
+                  {%- endif -%}
+                </div>
+              {%- elsif block.type == 'dropdown' -%}
+                {%- assign values = block.settings.values | split: ',' -%}
+
+                {%- if values == empty -%}
+                  {%- continue -%}
+                {%- endif -%}
+
+                <div class="nbd-form-field" {{ block.shopify_attributes }}>
+                  <div class="select-wrapper">
+                    <select id="contact-form-{{ field_title | handle }}" class="nbd-form-input" name="contact[{{ field_title | escape }}]" title="{{ block.settings.title | escape }}" required>
+                      <option value="" disabled selected></option>
+
+                      {%- for value in values -%}
+                        {%- assign trim_value = value | strip -%}
+                        <option value="{{ trim_value | escape }}">{{ trim_value | escape }}</option>
+                      {%- endfor -%}
+                    </select>
+
+                    {%- render 'icon' with 'chevron' -%}
+                  </div>
+
+                  <label for="contact-form-{{ field_title | handle }}" class="nbd-form-label">{{ block.settings.title | escape }}</label>
+                </div>
+              {%- endif -%}
+            {%- endfor -%}
+
+            <div class="nbd-form-field">
+              <label for="contact-message" class="nbd-form-label">{{ 'contact.form.message' | t }}</label>
+              <textarea id="contact-message" name="contact[body]" class="nbd-form-textarea" rows="5" required></textarea>
+            </div>
+
+            <button type="submit" class="nbd-button--primary nbd-button--full">{{ section.settings.submit_label | default: 'Send Message' }}</button>
+          {%- endform -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Contact",
+  "class": "shopify-section--contact-form",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image",
+      "info": "1000 x 1000px .jpg recommended"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Contact"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Contact Nasir Book Depot"
+    },
+    {
+      "type": "richtext",
+      "id": "content",
+      "label": "Intro text",
+      "default": "<p>Reach out to Nasir Book Depot for Islamic books and religious items, including Tasbeeh, Quran Sharif boxes, and Rehal.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Store details"
+    },
+    {
+      "type": "text",
+      "id": "store_label",
+      "label": "Store label",
+      "default": "Store"
+    },
+    {
+      "type": "text",
+      "id": "store_name",
+      "label": "Store name",
+      "default": "Nasir Book Depot"
+    },
+    {
+      "type": "textarea",
+      "id": "address",
+      "label": "Address",
+      "default": "1, Aziza Building, Hazrat Nizamuddin New Delhi - 110013"
+    },
+    {
+      "type": "text",
+      "id": "phone_label",
+      "label": "Phone label",
+      "default": "Contact"
+    },
+    {
+      "type": "header",
+      "content": "Actions"
+    },
+    {
+      "type": "text",
+      "id": "call_label",
+      "label": "Call button label",
+      "default": "Call Now"
+    },
+    {
+      "type": "textarea",
+      "id": "directions_address",
+      "label": "Directions address",
+      "default": "1, Aziza Building, Hazrat Nizamuddin New Delhi - 110013"
+    },
+    {
+      "type": "text",
+      "id": "directions_label",
+      "label": "Directions button label",
+      "default": "Get Directions"
+    },
+    {
+      "type": "header",
+      "content": "Form"
+    },
+    {
+      "type": "text",
+      "id": "form_eyebrow",
+      "label": "Form eyebrow",
+      "default": "Send A Message"
+    },
+    {
+      "type": "text",
+      "id": "form_title",
+      "label": "Form heading",
+      "default": "How can we help?"
+    },
+    {
+      "type": "richtext",
+      "id": "form_text",
+      "label": "Form text",
+      "default": "<p>Share your query and we will get back to you.</p>"
+    },
+    {
+      "type": "text",
+      "id": "submit_label",
+      "label": "Submit button label",
+      "default": "Send Message"
+    },
+    {
+      "type": "header",
+      "content": "Theme colors"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Theme background",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Theme text color",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "button_background",
+      "label": "Theme button background",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Theme button text",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "header",
+      "content": "Contact design colors"
+    },
+    {
+      "type": "color",
+      "id": "contact_background",
+      "label": "Background",
+      "default": "rgba(0,0,0,0)",
+      "info": "Uses theme background when set to transparent"
+    },
+    {
+      "type": "color",
+      "id": "contact_surface",
+      "label": "Card background",
+      "default": "rgba(0,0,0,0)",
+      "info": "Uses theme secondary background when set to transparent"
+    },
+    {
+      "type": "color",
+      "id": "contact_text",
+      "label": "Text",
+      "default": "rgba(0,0,0,0)",
+      "info": "Uses theme heading color when set to transparent"
+    },
+    {
+      "type": "color",
+      "id": "contact_muted",
+      "label": "Muted text",
+      "default": "rgba(0,0,0,0)",
+      "info": "Uses theme text color when set to transparent"
+    },
+    {
+      "type": "color",
+      "id": "contact_green",
+      "label": "Primary green",
+      "default": "rgba(0,0,0,0)",
+      "info": "Uses theme primary button background when set to transparent"
+    },
+    {
+      "type": "color",
+      "id": "contact_gold",
+      "label": "Gold accent",
+      "default": "rgba(0,0,0,0)",
+      "info": "Uses theme secondary button background when set to transparent"
+    },
+    {
+      "type": "color",
+      "id": "contact_border",
+      "label": "Border",
+      "default": "rgba(0,0,0,0)",
+      "info": "Uses theme border color when set to transparent"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "text",
+      "name": "Text field",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Name",
+          "default": "Custom field"
+        },
+        {
+          "type": "checkbox",
+          "id": "use_long_text",
+          "label": "Use long text",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "is_required",
+          "label": "Field is required",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "dropdown",
+      "name": "Dropdown",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Name",
+          "default": "Custom field"
+        },
+        {
+          "type": "text",
+          "id": "values",
+          "label": "Values",
+          "info": "Separate each value by a comma.",
+          "default": "value 1, value 2, value 3"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Contact form",
+      "settings": {}
+    }
+  ]
+}
+{% endschema %}
